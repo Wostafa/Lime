@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { blogName } from '../constants'
 import Navbar from '../components/navbar/navbar'
 import Footer from '../components/footer'
+import Featured from '../components/featured'
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <link type='image/png' rel="icon" href="/favicon.png" />
       </Head>
       <Navbar />
+      <Featured/>
       <Footer/>
     </div>
   )

@@ -11,6 +11,7 @@ module.exports = {
         'crayola-dark': '#D89A50',
         'gray-darker': '#383333',
         'gray-lighter': '#EDEDED',
+        'pink': '#F54A73',
       },
       fontFamily: {
         sans: ['Open Sans', ...fontFamily.sans],
