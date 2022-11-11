@@ -12,6 +12,7 @@ module.exports = {
         'gray-darker': '#383333',
         'gray-lighter': '#EDEDED',
         'pink': '#F54A73',
+        'black10': "#0000001A"
       },
       fontFamily: {
         sans: ['Open Sans', ...fontFamily.sans],

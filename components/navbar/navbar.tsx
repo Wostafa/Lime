@@ -7,10 +7,10 @@ export default function Navbar() {
       <h1 className='text-green text-6xl font-bold'>{blogName}</h1>
 
       <div className='relative w-3/5 isolate'>
-        <ul className='flex gap-16 capitalize pl-14 bg-green text-white rounded-l-full'>
+        <ul className='flex gap-16 capitalize pl-14 bg-green text-white rounded-l-full py-4'>
           {menuItems.map((item, index) => (
-            <li key={index} className='my-7'>
-              <Link href={`/${item}`}>{item}</Link>
+            <li key={index}>
+              <Link href={`/${item}`} className='block px-4 py-2 rounded-2xl hover:bg-emerald-600 transition-colors'>{item}</Link>
             </li>
           ))}
         </ul>

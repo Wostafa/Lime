@@ -3,8 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  body,
-  html {
+  body {
     @apply bg-gray-lighter font-sans h-full min-h-full pt-12;
   }
   html {

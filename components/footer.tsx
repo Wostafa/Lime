@@ -3,8 +3,7 @@ import { blogName } from '../constants';
 
 export default function Footer() {
   return (
-    <footer className='w-full mt-auto px-2 pt-4 pb-8'>
-      <div className='h-8 min-h-8'></div>
+    <footer className='w-full mt-auto px-2 pt-16 pb-8'>
       <div className='flex gap-3 text-slate-600'>
         <SocialIcons />
         <Tags />
@@ -74,5 +73,5 @@ const About = () => {
 };
 
 const Copyright = () => (
-  <div className='w-full rounded-2xl bg-slate-50 px-5 py-5 text-slate-400 mt-8 text-sm text-center'>2022- All Rights Reserved</div>
+  <div className='w-full rounded-2xl bg-white px-5 py-5 text-slate-400 mt-8 text-sm text-center'>2022- All Rights Reserved</div>
 );
