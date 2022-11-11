@@ -1,7 +1,13 @@
-export default function Sidebar({className}: {className:string}){
-  return(
-    <div className={`bg-white rounded-2xl h-72 ${className}`} >
+import { PropsWithChildren } from 'react'
 
+interface SidebarProps {
+  className?: string
+}
+
+export default function Sidebar({className, children}: PropsWithChildren<SidebarProps>){
+  return(
+    <div className={`rounded-2xl h-fit ${className}`} >
+      {children}
     </div>
   )
 }

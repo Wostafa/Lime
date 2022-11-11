@@ -2,11 +2,15 @@ import Head from 'next/head';
 import Sidebar from '../../components/sidebar';
 import Comments from '../../components/comments';
 import { Article, Main } from '../../components/elements';
+import PostCard from '../../components/post-card';
 
 interface PostData {
   title: string;
   data: string;
 }
+
+const images = ['f1', 'f2'];
+const fakeTitle = `It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`;
 
 export default function Post({ data, title }: PostData) {
   return (
@@ -19,7 +23,13 @@ export default function Post({ data, title }: PostData) {
           <Article props={{ title, data }} />
           <Comments />
         </Main>
-        <Sidebar className='flex-1' />
+        <Sidebar className='flex-1'>
+          <div className='flex flex-col gap-5'>
+            {images.map((image, index) => (
+              <PostCard key={index} link='' image={`/temp-images/${image}.jpg`} title={fakeTitle} />
+            ))}
+          </div>
+        </Sidebar>
       </div>
     </>
   );
