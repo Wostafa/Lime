@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Sidebar from '../../components/sidebar';
 import Comments from '../../components/comments';
+import { Article, Main } from '../../components/elements';
 
 interface PostData {
   title: string;
@@ -14,13 +15,10 @@ export default function Post({ data, title }: PostData) {
         <title>{title.toUpperCase()}</title>
       </Head>
       <div className='flex gap-4'>
-        <div className='flex-[3_1_0%] bg-white rounded-r-2xl pl-20 pr-20 py-20'>
-          <article className=''>
-            <h1 className='mb-7 capitalize font-bold'>{title}</h1>
-            <p className='first-letter:uppercase'>{data}</p>
-          </article>
+        <Main>
+          <Article props={{ title, data }} />
           <Comments />
-        </div>
+        </Main>
         <Sidebar className='flex-1' />
       </div>
     </>

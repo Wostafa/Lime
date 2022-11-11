@@ -10,7 +10,7 @@ export default function Navbar() {
         <ul className='flex gap-16 capitalize pl-14 bg-green text-white rounded-l-full py-4'>
           {menuItems.map((item, index) => (
             <li key={index}>
-              <Link href={`/${item}`} className='block px-4 py-2 rounded-2xl hover:bg-emerald-600 transition-colors'>{item}</Link>
+              <Link href={`/${item.path}`} className='block px-4 py-2 rounded-2xl hover:bg-emerald-600 transition-colors'>{item.title}</Link>
             </li>
           ))}
         </ul>
