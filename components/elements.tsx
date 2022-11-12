@@ -20,5 +20,5 @@ export const Article: StyledElement = ({ props }) => (
 );
 
 export const Main: StyledElement = ({ children }) => (
-  <div className='flex-[2.5_1_0%] bg-white rounded-r-2xl pl-20 pr-20 py-20'>{children}</div>
+  <div className='flex-[2.5_1_0%] bg-white rounded-2xl pl-20 pr-20 py-20'>{children}</div>
 );

@@ -3,13 +3,16 @@ import { blogName } from '../constants';
 
 export default function Footer() {
   return (
-    <footer className='w-full mt-auto px-2 pt-16 pb-8'>
+    <footer className='w-full mt-auto pt-16'>
+      <div className='px-6 py-8 rounded-t-2xl bg-stone-100'>
+
       <div className='flex gap-3 text-slate-600'>
         <SocialIcons />
         <Tags />
         <About />
       </div>
       <Copyright />
+      </div>
     </footer>
   );
 }
@@ -73,5 +76,5 @@ const About = () => {
 };
 
 const Copyright = () => (
-  <div className='w-full rounded-2xl bg-white px-5 py-5 text-slate-400 mt-8 text-sm text-center'>2022- All Rights Reserved</div>
+  <div className='w-full rounded-2xl bg-gray-lighter px-5 py-5 text-slate-400 mt-8 text-sm text-center'>2022- All Rights Reserved</div>
 );

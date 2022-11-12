@@ -19,7 +19,8 @@ const Card = () => {
       className={`block group relative rounded-2xl overflow-hidden ${colorsBorder[index]} border-r-4 border-b-4 h-72 col-[span_19_/_span_19] first:col-[span_21_/_span_21] last:col-[span_21_/_span_21]`}
       key={index}
     >
-      <Image src={`/temp-images/${image}.jpg`} alt='' fill className='object-cover absolute left-0 top-0' />
+      {/* TODO: edit sizes */}
+      <Image src={`/temp-images/${image}.jpg`} alt='' fill className='object-cover absolute left-0 top-0' sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"/>
       <div
         className={`bg-gradient-to-t ${colorsGradient[index]} absolute left-0 top-0 right-0 bottom-0 opacity-70 group-hover:opacity-0 transition-opacity duration-200`}
       ></div>

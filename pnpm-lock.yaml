@@ -1,6 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@editorjs/editorjs': ^2.25.0
+  '@editorjs/header': ^2.6.2
+  '@editorjs/image': ^2.6.2
   '@types/node': 18.11.9
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.8
@@ -17,6 +20,7 @@ specifiers:
   typescript: 4.8.4
 
 dependencies:
+  '@editorjs/editorjs': 2.25.0
   '@types/node': 18.11.9
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.8
@@ -29,6 +33,8 @@ dependencies:
   typescript: 4.8.4
 
 devDependencies:
+  '@editorjs/header': 2.6.2
+  '@editorjs/image': 2.6.2
   autoprefixer: 10.4.13_postcss@8.4.18
   eslint-config-prettier: 8.5.0_eslint@8.27.0
   postcss: 8.4.18
@@ -50,6 +56,22 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.10
     dev: false
+
+  /@editorjs/editorjs/2.25.0:
+    resolution: {integrity: sha512-TEu7h7EPh6Lx2VGIM1jVn2dky23TbpVJBd3AGvXcam1lyHuJwZ1iydbsQGF9pFkHSCiaQptTfIjZ8Y24v47Wag==}
+    dependencies:
+      codex-notifier: 1.1.2
+      codex-tooltip: 1.0.5
+      nanoid: 3.3.4
+    dev: false
+
+  /@editorjs/header/2.6.2:
+    resolution: {integrity: sha512-U1dnT+KGjwFmpWneEEyR2Nqp42hn9iKwQDgRHWQM+y6qx82pg+eAyuIf0QWt2Mluu9uPD2CzNfvJ+pxIuwX8Lw==}
+    dev: true
+
+  /@editorjs/image/2.6.2:
+    resolution: {integrity: sha512-lai6LFJ8m3qRmSjio66o0CX7/75OupC3FQ5JWrV/biRT6GvUHtRNWKaMowKcC2ndXtfs4w6WwRxcXlB4WhUAdg==}
+    dev: true
 
   /@eslint/eslintrc/1.3.3:
     resolution: {integrity: sha512-uj3pT6Mg+3t39fvLrj8iuCIJ38zKO9FpGtJ4BBJebJhEwjoT+KLVNCcHT5QC9NGRIEi7fZ0ZR8YRb884auB4Lg==}
@@ -542,6 +564,14 @@ packages:
 
   /client-only/0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
+    dev: false
+
+  /codex-notifier/1.1.2:
+    resolution: {integrity: sha512-DCp6xe/LGueJ1N5sXEwcBc3r3PyVkEEDNWCVigfvywAkeXcZMk9K41a31tkEFBW0Ptlwji6/JlAb49E3Yrxbtg==}
+    dev: false
+
+  /codex-tooltip/1.0.5:
+    resolution: {integrity: sha512-IuA8LeyLU5p1B+HyhOsqR6oxyFQ11k3i9e9aXw40CrHFTRO2Y1npNBVU3W1SvhKAbUU7R/YikUBdcYFP0RcJag==}
     dev: false
 
   /color-convert/2.0.1:
