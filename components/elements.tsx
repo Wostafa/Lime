@@ -3,11 +3,12 @@ import { PropsWithChildren } from 'react';
 interface ElementProps {
   className?: string;
   props?: any;
+  [x:string]:any
 }
 type StyledElement = ({}: PropsWithChildren<ElementProps>) => JSX.Element;
 
-export const Button: StyledElement = ({ children, className = '' }) => (
-  <button className={`py-3 px-9 text-white hover:ring-1 transition-shadow rounded-2xl font-bold mt-5 ${className}`}>
+export const Button: StyledElement = ({ children, className = '', ...rest }) => (
+  <button className={`py-3 px-9 text-white hover:ring-1 transition-shadow rounded-2xl font-bold mt-5 ${className}`} {...rest}>
     {children}
   </button>
 );

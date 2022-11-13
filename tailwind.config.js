@@ -17,6 +17,9 @@ module.exports = {
       fontFamily: {
         sans: ['Open Sans', ...fontFamily.sans],
       },
+      animation: {
+        'spin-slow': 'spin 1.7s linear infinite',
+      }
     },
   },
   plugins: [],

@@ -3,7 +3,6 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import Editor from '../components/editor';
-// import type {} from '@editorjs/editorjs'
 // const EditorJS = dynamic(()=> import('@editorjs/editorjs'), {ssr: false})
 
 
@@ -37,7 +36,8 @@ export default function Profile() {
       </Head>
       <Main>
         {/* <div id='editorjs' className='w-full border-2 border-sky-500'></div> */}
-        <div className='w-full border-2 border-sky-500'><Editor/></div>
+        <div className='w-full'><Editor/></div>
+        {/* <div className='w-full border-2 border-sky-500'><EditorB/></div> */}
       </Main>
     </>
   );
