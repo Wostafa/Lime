@@ -108,11 +108,10 @@ export default function Editor() {
           onChange={titleHandler}
           type='text'
           id='title'
-          className='rounded-2xl border-gray-200 border-2 p-3 outline-1 outline-gray-500 max-w-xs mt-2 block'
+          className='rounded-2xl border-gray-200 border-2 p-3 outline-1 outline-gray-500 max-w-md w-full mt-2 block'
         />
         <div className='rounded-2xl p-9 bg-[#eef5fa] mt-5'>
-        <div ref={editorDomRef} className='rounded-lg shadow-md bg-white py-2' id={EditorID}></div>
-        {/* <div ref={editorDomRef} className='border-2 border-gray-200 rounded-md mt-4 py-2 focus-within:border-gray-500' id={EditorID}></div> */}
+        <div ref={editorDomRef} className='rounded-lg shadow-md bg-white py-2 opacity-80 focus-within:opacity-100' id={EditorID}></div>
         </div>
         <Button className='bg-lime-500 w-fit' onClick={publishHandler}>
           Publish
