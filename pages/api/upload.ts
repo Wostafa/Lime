@@ -27,7 +27,7 @@ async function Parse(req: NextApiRequest): Promise<File> {
     let base64Image = '';
     const _busboy = busboy({ headers: req.headers });
     _busboy.on('file', (filedName, file, info) => {
-      if(filedName !== 'image') reject({msg: 'invalid file', status: 400});
+      if (filedName !== 'image') reject({ msg: 'invalid file', status: 400 });
       file.setEncoding('base64');
       file.on('data', data => {
         base64Image += data;
@@ -56,9 +56,9 @@ function Upload({ base64Image, info }: File, res: NextApiResponse) {
       console.log('uploaded: ', url);
       res.status(200).json({
         success: 1,
-        file:{
-          url
-        }
+        file: {
+          url,
+        },
       });
     });
   });

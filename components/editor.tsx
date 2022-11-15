@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Button } from './elements';
 import { Loader } from 'react-feather';
-const EditorID = 'editorjs';
+const EDITOR_ID = 'editorjs';
+const EDITOR_DATA = 'editor-data'
 
 const saveToStorage = (data: {}) => {
-  console.log(data);
-  window.localStorage.setItem('editor-data', JSON.stringify(data));
+  window.localStorage.setItem(EDITOR_DATA, JSON.stringify(data));
 };
 const getFromStorage = () => {
-  return JSON.parse(String(window.localStorage.getItem('editor-data')));
+  return JSON.parse(String(window.localStorage.getItem(EDITOR_DATA)));
 };
 
 export default function Editor() {
@@ -18,31 +18,33 @@ export default function Editor() {
   const isLoading = useRef<boolean>(false);
   const [isReady, setIsReady] = useState(false);
   const [title, setTitle] = useState('');
-  /* use ref to keep title updated for saving, because
-   saving process can't get latest state of title in useEffect */
-  const titleRef = useRef('');
+  const [draftSaved, setDraftSaved] = useState('');
   const editorDomRef = useRef<HTMLDivElement>(null);
 
   const publishHandler = async () => {
     const data = await editorInstance.current.saver.save();
-    if(!title || data.blocks.length === 0){
-      alert('title or content is empty')
-      return
+    if (!title || data.blocks.length === 0) {
+      alert('title or content is empty');
+      return;
     }
-    console.log(data);
+  };
+  const draftHandler = async () => {
+    const data = await editorInstance.current.saver.save();
+    saveToStorage({
+      title,
+      data,
+    });
+    setDraftSaved('Saved!')
+    setTimeout(()=> setDraftSaved(''), 2000)
   };
 
   const titleHandler: React.ChangeEventHandler<HTMLInputElement> = e => {
     setTitle(e.target.value);
-    titleRef.current = e.target.value;
   };
 
   useEffect(() => {
-    console.log('use');
-    console.log('isLoading: ', isLoading.current);
     // to avoid adding twice editorjs dom
     if (!isLoading.current) {
-      console.log('isLoading is not set: ', isLoading.current);
       if (!editorInstance.current) {
         (async () => {
           isLoading.current = true;
@@ -53,11 +55,10 @@ export default function Editor() {
           const savedData = getFromStorage();
           if (savedData) {
             setTitle(savedData.title);
-            titleRef.current = savedData.title;
           }
 
           const editor = new EditorJS({
-            holder: EditorID,
+            holder: EDITOR_ID,
             data: savedData ? savedData.data : null,
             placeholder: 'Write something',
             tools: {
@@ -66,7 +67,7 @@ export default function Editor() {
                 class: Image,
                 config: {
                   endpoints: {
-                    byFile: 'http://localhost:3000/api/upload', // Your backend file uploader endpoint
+                    byFile: '/api/upload',
                   },
                 },
               },
@@ -74,26 +75,16 @@ export default function Editor() {
             onReady: () => {
               editorInstance.current = editor;
               isLoading.current = false;
-              console.log('onReady: ', editor);
               setIsReady(true);
             },
-            onChange: ()=> {},
+            onChange: () => {},
           });
         })();
       }
     }
     return () => {
-
-      (async () => {
-        if (!editorInstance.current || !editorInstance.current.saver) return;
-        const data = await editorInstance.current.saver.save();
-        saveToStorage({
-          title: titleRef.current,
-          data,
-        });
-        editorInstance.current.destroy();
-        console.log('destroy');
-      })();
+      if (!editorInstance.current || !editorInstance.current.saver) return;
+      editorInstance.current.destroy();
     };
   }, []);
 
@@ -111,11 +102,21 @@ export default function Editor() {
           className='rounded-2xl border-gray-200 border-2 p-3 outline-1 outline-gray-500 max-w-md w-full mt-2 block'
         />
         <div className='rounded-2xl p-9 bg-[#eef5fa] mt-5'>
-        <div ref={editorDomRef} className='rounded-lg shadow-md bg-white py-2 opacity-80 focus-within:opacity-100' id={EditorID}></div>
+          <div
+            ref={editorDomRef}
+            className='rounded-lg shadow-md bg-white py-2 opacity-80 focus-within:opacity-100'
+            id={EDITOR_ID}
+          ></div>
         </div>
-        <Button className='bg-lime-500 w-fit' onClick={publishHandler}>
-          Publish
-        </Button>
+        <div className='flex gap-5 items-baseline'>
+          <Button className='bg-lime-500 w-fit' onClick={publishHandler}>
+            Publish
+          </Button>
+          <Button className='bg-cyan-500 w-fit' onClick={draftHandler}>
+            Save Draft
+          </Button>
+          <div className='text-slate-500 font-semibold'>{draftSaved}</div>
+        </div>
       </div>
     </>
   );
