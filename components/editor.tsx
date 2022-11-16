@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Button } from './elements';
 import { Loader } from 'react-feather';
 const EDITOR_ID = 'editorjs';
-const EDITOR_DATA = 'editor-data'
+const EDITOR_DATA = 'editor-data';
 
 const saveToStorage = (data: {}) => {
   window.localStorage.setItem(EDITOR_DATA, JSON.stringify(data));
@@ -12,8 +12,9 @@ const getFromStorage = () => {
 };
 
 export default function Editor() {
-  /* using ref instead of state because editor.js is not init immediately and during
-   development useState is called twice and state reset every time */
+  /* editorjs's destroy() does not remove the editor dom from its parent,
+  so you have to use ref to memorize that editor is set up during rerenders,
+  specially in development because rect call useEffects twice */
   const editorInstance = useRef<any>();
   const isLoading = useRef<boolean>(false);
   const [isReady, setIsReady] = useState(false);
@@ -27,6 +28,27 @@ export default function Editor() {
       alert('title or content is empty');
       return;
     }
+    const body = {
+      title,
+      data,
+    };
+    try {
+      const res = await fetch('/api/publish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to publish the post');
+      }
+      const json = await res.json();
+      console.log('Post published', json);
+
+    } catch (e) {
+      console.error('Network Error: ', e);
+    }
   };
   const draftHandler = async () => {
     const data = await editorInstance.current.saver.save();
@@ -34,8 +56,8 @@ export default function Editor() {
       title,
       data,
     });
-    setDraftSaved('Saved!')
-    setTimeout(()=> setDraftSaved(''), 2000)
+    setDraftSaved('Saved!');
+    setTimeout(() => setDraftSaved(''), 2000);
   };
 
   const titleHandler: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -108,7 +130,7 @@ export default function Editor() {
             id={EDITOR_ID}
           ></div>
         </div>
-        <div className='flex gap-5 items-baseline'>
+        <div className='flex gap-5 items-baseline mt-5'>
           <Button className='bg-lime-500 w-fit' onClick={publishHandler}>
             Publish
           </Button>

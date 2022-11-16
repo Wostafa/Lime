@@ -12,6 +12,8 @@ interface File {
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   if (req.method !== 'POST' || !req.headers['content-type']?.includes('multipart/form-data')) {
     res.status(400).json({ error: 'bad request' });
+    console.error('error: bad request');
+    return
   }
   try {
     const file = await Parse(req);
