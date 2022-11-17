@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button } from './elements';
-import { Loader } from 'react-feather';
+import { Button, Loading, notify } from './elements';
+import { TOKEN_KEY } from '../constants';
+
 const EDITOR_ID = 'editorjs';
 const EDITOR_DATA = 'editor-data';
 
@@ -33,20 +34,25 @@ export default function Editor() {
       data,
     };
     try {
+      const sending = notify.show.loading('Sending...', notify.default)
       const res = await fetch('/api/publish', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+           authorization: sessionStorage.getItem(TOKEN_KEY) || ''
         },
         body: JSON.stringify(body),
       });
+      notify.hide(sending);
       if (!res.ok) {
         throw new Error('Failed to publish the post');
       }
       const json = await res.json();
       console.log('Post published', json);
+      notify.show.success('Post successfully published', notify.default)
 
     } catch (e) {
+      notify.show.error('Failed to publish post', notify.default)
       console.error('Network Error: ', e);
     }
   };
@@ -91,6 +97,9 @@ export default function Editor() {
                   endpoints: {
                     byFile: '/api/upload',
                   },
+                  additionalRequestHeaders: {
+                    authorization: sessionStorage.getItem(TOKEN_KEY)
+                  }
                 },
               },
             },
@@ -112,7 +121,7 @@ export default function Editor() {
 
   return (
     <>
-      {!isReady && <Loader color='#26B093' size={32} className='animate-spin-slow mx-auto' />}
+      {!isReady && <Loading />}
 
       <div className={`${isReady ? 'block' : 'hidden'}`}>
         <label htmlFor='title'>Title:</label>
@@ -140,6 +149,7 @@ export default function Editor() {
           <div className='text-slate-500 font-semibold'>{draftSaved}</div>
         </div>
       </div>
+      <notify.Loader/>
     </>
   );
 }

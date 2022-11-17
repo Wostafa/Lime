@@ -1,6 +1,9 @@
 import admin from 'firebase-admin'
 import { applicationDefault } from 'firebase-admin/app';
 
-admin.initializeApp({
-  credential: applicationDefault()
-})
+// avoiding being called more than once
+if(admin.apps.length === 0){
+  admin.initializeApp({
+    credential: applicationDefault()
+  })
+}

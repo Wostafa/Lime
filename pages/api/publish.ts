@@ -1,49 +1,34 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-// import {doc, setDoc, getFirestore, addDoc, collection} from 'firebase/firestore'
-// import {app} from '../../lib/firebase'
-import {getFirestore} from 'firebase-admin/firestore'
-import '../../lib/firebase-admin';
+import { getFirestore } from 'firebase-admin/firestore';
+import VerifyUser from '../../lib/verify-user';
+import type { UserInfo } from '../../constants';
+import '../../lib/firebase-admin'
 
-
-// const db = getFirestore(app)
-const db = getFirestore()
+const db = getFirestore();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-/*   if(req.headers['content-type'] !== 'application/json'){
-    res.status(200).json({error:'bad request'})
-    return
+  if (req.headers['content-type'] !== 'application/json') {
+    res.status(400).json({ error: 'bad request' });
+    return;
   }
-  console.log(req.body)
-  res.status(200).json({message: 'post successfully published'}) */
-  // -------
-  console.log(req.headers)
-  try{
-    await FirebaseAdmin()
-    res.status(200).json({})
-  }catch(e){
-    res.status(500).json({e})
+  try {
+    const userInfo = await VerifyUser(req.headers);
+    const postId = await Upload(req.body, userInfo);
+    console.log('post published, id: ', postId)
+    res.status(200).json({
+      message: 'post successfully published',
+      postId,
+    });
+  } catch (e: any) {
+    res.status(e.status || 500).json({ error: e.msg || 'failed to publish' });
   }
 }
-/* 
-async function Firebase(){
-  // const col = 'test-public';
-  const col = 'test-auth'
-  const colRef = collection(db, col);
-  const docRef = await addDoc(colRef, {
-    name: 'jack',
-    date: new Date().toLocaleTimeString()
-  })
-  return docRef.id
-} */
 
-async function FirebaseAdmin(){
-  // const col = 'test-public';
-  const col = 'test-auth'
-  const docRef = db.collection(col).doc();
-  const res = await docRef.set({
-    name: 'jack',
-    date: new Date().toLocaleTimeString()
-  })
-  console.log(res)
-  console.log(docRef.id)
+async function Upload(post: {}, user: UserInfo) {
+  const docRef = db.collection('posts').doc();
+  await docRef.set({
+    post,
+    user,
+  });
+  return docRef.id;
 }

@@ -7,7 +7,7 @@ export function Login() {
   const loginHandler = () => {
     signInWithPopup(getAuth(), authProvider)
       .then(result => {
-        console.log(GoogleAuthProvider.credentialFromResult(result))
+        // console.log(GoogleAuthProvider.credentialFromResult(result))
         console.log('login was successful: ', result.user.email);
       })
       .catch(e => {

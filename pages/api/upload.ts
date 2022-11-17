@@ -1,8 +1,8 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { nanoid } from 'nanoid/non-secure';
 import busboy, { FileInfo } from 'busboy';
+import '../../lib/firebase-admin'
 
 interface File {
   base64Image: string;
@@ -16,8 +16,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return
   }
   try {
-    const file = await Parse(req);
-    Upload(file, res);
+    // const file = await Parse(req);
+    // Upload(file, res);
+    console.log(req.headers);
+    res.status(200).json({});
   } catch (e: any) {
     console.log('failed to process file: ', e);
     res.status(e.status || 500).json({ error: 'failed to process file' || e.msg });

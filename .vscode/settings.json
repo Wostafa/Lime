@@ -5,5 +5,8 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "tailwindCSS.colorDecorators": false
+  "tailwindCSS.colorDecorators": false,
+  "cSpell.words": [
+    "csstype"
+  ]
 }

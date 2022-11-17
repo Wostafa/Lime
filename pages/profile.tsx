@@ -1,4 +1,4 @@
-import { Main } from '../components/elements';
+import { Main, Loading } from '../components/elements';
 import Head from 'next/head';
 import { useContext } from 'react';
 import Editor from '../components/editor';
@@ -13,9 +13,9 @@ export default function Profile() {
         <title>Profile</title>
       </Head>
       <Main>
-        {!user ? (
-          <Login />
-        ) : (
+        {user === null && <Loading />}
+        {user === false && <Login />}
+        {user && (
           <div className='w-full flex flex-col'>
             <div className='self-end'>
               <Logout />

@@ -4,3 +4,10 @@ export const menuItems = [
   { title: 'profile', path: '/profile' },
   { title: 'about', path: '/about' },
 ];
+export const TOKEN_KEY = 'IdToken'
+
+export interface UserInfo {
+  uid: string,
+  email: string | undefined,
+  picture: string | undefined,
+}
