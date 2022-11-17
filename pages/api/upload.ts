@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { getStorage } from 'firebase-admin/storage';
 import { nanoid } from 'nanoid/non-secure';
 import busboy, { FileInfo } from 'busboy';
-import '../../lib/firebase-admin'
+import '../../lib/firebase-admin';
+import VerifyUser from '../../lib/verify-user';
 
 interface File {
   base64Image: string;
@@ -13,16 +14,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (req.method !== 'POST' || !req.headers['content-type']?.includes('multipart/form-data')) {
     res.status(400).json({ error: 'bad request' });
     console.error('error: bad request');
-    return
+    return;
   }
   try {
-    // const file = await Parse(req);
-    // Upload(file, res);
-    console.log(req.headers);
-    res.status(200).json({});
+    await VerifyUser(req.headers);
+    const file = await Parse(req);
+    await Upload(file, res);
   } catch (e: any) {
     console.log('failed to process file: ', e);
-    res.status(e.status || 500).json({ error: 'failed to process file' || e.msg });
+    res.status(e.status || 500).json({ error: e.msg || 'failed to process file' });
   }
 }
 
@@ -50,21 +50,19 @@ async function Parse(req: NextApiRequest): Promise<File> {
   });
 }
 
-function Upload({ base64Image, info }: File, res: NextApiResponse) {
-  const storage = getStorage();
-  const imageRef = ref(storage, `images/${nanoid(10)}.${info.mimeType.split('/')[1]}`);
-  const dataUrl = `data:${info.mimeType};base64,${base64Image}`;
+async function Upload({ base64Image, info }: File, res: NextApiResponse) {
+  const bufferImage = Buffer.from(base64Image, 'base64');
+  const bucket = getStorage().bucket('lime-27e23.appspot.com');
+  const file = bucket.file(`images/${nanoid(10)}.${info.mimeType.split('/')[1]}`);
 
-  uploadString(imageRef, dataUrl, 'data_url').then(snapshot => {
-    getDownloadURL(snapshot.ref).then(url => {
-      console.log('uploaded: ', url);
-      res.status(200).json({
-        success: 1,
-        file: {
-          url,
-        },
-      });
-    });
+  await file.save(bufferImage, { contentType: info.mimeType });
+  console.log('file uploaded: ', file.publicUrl());
+
+  res.status(200).json({
+    success: 1,
+    file: {
+      url: file.publicUrl(),
+    },
   });
 }
 
