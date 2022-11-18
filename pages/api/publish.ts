@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getFirestore } from 'firebase-admin/firestore';
 import VerifyUser from '../../lib/verify-user';
-import type { UserInfo } from '../../constants';
+import type { UserInfo, PostPublish } from '../../constants';
 import '../../lib/firebase-admin'
+import slugify from 'slugify';
 
 const db = getFirestore();
 
@@ -12,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
   try {
-    const userInfo = await VerifyUser(req.headers);
+    const userInfo = await VerifyUser(req.headers.authorization);
     const postId = await Upload(req.body, userInfo);
     console.log('post published, id: ', postId)
     res.status(200).json({
@@ -24,11 +25,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-async function Upload(post: {}, user: UserInfo) {
+async function Upload(post: PostPublish, user: UserInfo) {
   const docRef = db.collection('posts').doc();
   await docRef.set({
     post,
     user,
+    slug: slugify(post.title, {lower:true, strict:true}),
   });
   return docRef.id;
 }

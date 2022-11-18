@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return;
   }
   try {
-    await VerifyUser(req.headers);
+    await VerifyUser(req.headers.authorization);
     const file = await Parse(req);
     await Upload(file, res);
   } catch (e: any) {

@@ -11,3 +11,8 @@ export interface UserInfo {
   email: string | undefined,
   picture: string | undefined,
 }
+
+export interface PostPublish {
+  title: string,
+  data: {}
+}

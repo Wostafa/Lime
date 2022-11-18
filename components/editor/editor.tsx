@@ -1,16 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button, Loading, notify } from './elements';
-import { TOKEN_KEY } from '../constants';
+import { Button, Loading, notify } from '../elements';
+import { TOKEN_KEY } from '../../constants';
+import * as handlers from './handlers';
 
 const EDITOR_ID = 'editorjs';
-const EDITOR_DATA = 'editor-data';
-
-const saveToStorage = (data: {}) => {
-  window.localStorage.setItem(EDITOR_DATA, JSON.stringify(data));
-};
-const getFromStorage = () => {
-  return JSON.parse(String(window.localStorage.getItem(EDITOR_DATA)));
-};
 
 export default function Editor() {
   /* editorjs's destroy() does not remove the editor dom from its parent,
@@ -20,51 +13,11 @@ export default function Editor() {
   const isLoading = useRef<boolean>(false);
   const [isReady, setIsReady] = useState(false);
   const [title, setTitle] = useState('');
-  const [draftSaved, setDraftSaved] = useState('');
   const editorDomRef = useRef<HTMLDivElement>(null);
-
-  const publishHandler = async () => {
-    const data = await editorInstance.current.saver.save();
-    if (!title || data.blocks.length === 0) {
-      alert('title or content is empty');
-      return;
-    }
-    const body = {
-      title,
-      data,
-    };
-    try {
-      const sending = notify.show.loading('Sending...', notify.default)
-      const res = await fetch('/api/publish', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-           authorization: sessionStorage.getItem(TOKEN_KEY) || ''
-        },
-        body: JSON.stringify(body),
-      });
-      notify.hide(sending);
-      if (!res.ok) {
-        throw new Error('Failed to publish the post');
-      }
-      const json = await res.json();
-      console.log('Post published', json);
-      notify.show.success('Post successfully published', notify.default)
-
-    } catch (e) {
-      notify.show.error('Failed to publish post', notify.default)
-      console.error('Network Error: ', e);
-    }
-  };
-  const draftHandler = async () => {
-    const data = await editorInstance.current.saver.save();
-    saveToStorage({
-      title,
-      data,
-    });
-    setDraftSaved('Saved!');
-    setTimeout(() => setDraftSaved(''), 2000);
-  };
+  
+  const publishHandler = () => handlers.publishHandler(editorInstance, title)
+  const draftHandler = () => handlers.draftHandler(editorInstance, title)
+  const previewHandler = () => handlers.publishHandler(editorInstance, title, true)
 
   const titleHandler: React.ChangeEventHandler<HTMLInputElement> = e => {
     setTitle(e.target.value);
@@ -80,7 +33,7 @@ export default function Editor() {
           const Header = (await import('@editorjs/header')).default;
           const Image = (await import('@editorjs/image')).default;
 
-          const savedData = getFromStorage();
+          const savedData = handlers.getFromStorage();
           if (savedData) {
             setTitle(savedData.title);
           }
@@ -146,7 +99,9 @@ export default function Editor() {
           <Button className='bg-cyan-500 w-fit' onClick={draftHandler}>
             Save Draft
           </Button>
-          <div className='text-slate-500 font-semibold'>{draftSaved}</div>
+          <Button className='bg-amber-500 w-fit' onClick={previewHandler}>
+            Preview
+          </Button>
         </div>
       </div>
       <notify.Loader/>

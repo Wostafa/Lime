@@ -5,6 +5,7 @@ import Sidebar from '../../components/sidebar';
 import Comments from '../../components/comments';
 import { Article, Main, Loading, Wrapper } from '../../components/elements';
 import PostCard from '../../components/post-card';
+import {Capitalize} from '../../lib/utils'
 
 interface PostData {
   title: string;
@@ -19,7 +20,7 @@ export default function Post({ data, title }: PostData) {
   return (
     <>
       <Head>
-        <title>{router.isFallback? 'Loading...' : title.toUpperCase()}</title>
+        <title>{router.isFallback? 'Loading...' : Capitalize(title)}</title>
       </Head>
       <Wrapper>
         <Main>

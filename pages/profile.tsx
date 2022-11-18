@@ -1,7 +1,7 @@
 import { Main, Loading } from '../components/elements';
 import Head from 'next/head';
 import { useContext } from 'react';
-import Editor from '../components/editor';
+import Editor from '../components/editor/editor';
 import { AuthContext } from '../lib/contexts';
 import { Login, Logout } from '../components/auth';
 

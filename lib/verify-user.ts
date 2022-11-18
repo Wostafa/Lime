@@ -1,12 +1,11 @@
 import { getAuth } from 'firebase-admin/auth';
-import { IncomingHttpHeaders } from 'http';
 import type { UserInfo } from '../constants';
 
-export default async function VerifyUser(headers: IncomingHttpHeaders): Promise<UserInfo> {
+export default async function VerifyUser(authorization:string | undefined): Promise<UserInfo> {
   return new Promise((resolve, reject) => {
-    if (headers.authorization) {
+    if (authorization) {
       getAuth()
-        .verifyIdToken(headers.authorization)
+        .verifyIdToken(authorization)
         .then(decodedToken => {
           console.log('user is valid: ', {
             email: decodedToken.email,
