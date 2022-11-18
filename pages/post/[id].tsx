@@ -1,7 +1,9 @@
 import Head from 'next/head';
+import {useRouter} from 'next/router'
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import Sidebar from '../../components/sidebar';
 import Comments from '../../components/comments';
-import { Article, Main } from '../../components/elements';
+import { Article, Main, Loading, Wrapper } from '../../components/elements';
 import PostCard from '../../components/post-card';
 
 interface PostData {
@@ -13,29 +15,37 @@ const images = ['f1', 'f2'];
 const fakeTitle = `It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`;
 
 export default function Post({ data, title }: PostData) {
+  const router = useRouter()
   return (
     <>
       <Head>
-        <title>{title.toUpperCase()}</title>
+        <title>{router.isFallback? 'Loading...' : title.toUpperCase()}</title>
       </Head>
-      <div className='flex gap-4'>
+      <Wrapper>
         <Main>
+          {router.isFallback ? <Loading/> :
           <Article props={{ title, data }} />
-          <Comments />
+        }
+          {/* <Comments /> */}
         </Main>
-        <Sidebar className='flex-1'>
+        <Sidebar>
           <div className='flex flex-col gap-5'>
-            {images.map((image, index) => (
+            {/* {images.map((image, index) => (
               <PostCard key={index} link='' image={`/temp-images/${image}.jpg`} title={fakeTitle} />
-            ))}
+            ))} */}
           </div>
         </Sidebar>
-      </div>
+      </Wrapper>
     </>
   );
 }
 
-export async function getStaticPaths() {
+
+interface Params {
+  id: string
+}
+
+export const getStaticPaths:GetStaticPaths= ()=> {
   return {
     paths: [
       {
@@ -44,11 +54,21 @@ export async function getStaticPaths() {
         },
       },
     ],
-    fallback: false,
+    fallback: true,
+
   };
 }
 
-export async function getStaticProps() {
+
+
+export const getStaticProps:GetStaticProps = (context) => {
+  if(context.params?.id === 'abcd'){
+    console.log(context)
+    return {
+      notFound:true
+    }
+  }
+  // console.log(context)
   return {
     props: {
       title: 'mario review',
