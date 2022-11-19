@@ -32,6 +32,7 @@ export const publishHandler = async (editorInstance:React.MutableRefObject<any>,
       }
       const json = await res.json();
       console.log('Post published', json);
+
       if(isPreview) {
         showPreview(json.postId)
         return
@@ -47,8 +48,11 @@ export const publishHandler = async (editorInstance:React.MutableRefObject<any>,
 
   export const showPreview = (postId: string) =>{
     const secret = sessionStorage.getItem(TOKEN_KEY); 
-    const url = `/api/preview?secret=${secret}&postId=${postId}`
-    window.open(url, '_blank')
+    const url = `/api/preview?secret=${secret}&postId=${postId}`;
+    (()=>{
+      window.open(url, '_blank')
+    })()
+    
   }
 
   export const draftHandler = async (editorInstance:React.MutableRefObject<any>, title:string) => {

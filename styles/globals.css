@@ -30,3 +30,30 @@
     @apply text-lg;
   }
 }
+
+/* some bugs in tailwinds which styles sometimes
+don't work when i set to editorjs-parser elements, so i did here */
+.post h1,
+h2,
+h3 {
+  margin-bottom: 20px;
+  text-transform: capitalize;
+}
+.post p {
+  margin: 20px 0;
+}
+
+.post img {
+  object-fit: contain;
+}
+
+.image-wrapper {
+  position: relative;
+  border-radius: 6px;
+  padding-bottom: 50%;
+}
+
+.post time {
+  opacity: 0.8;
+  font-size: 0.8rem;
+}

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getFirestore } from 'firebase-admin/firestore';
 import VerifyUser from '../../lib/verify-user';
-import type { UserInfo, PostPublish } from '../../constants';
+import type { UserInfo, PostPublish, PostStored } from '../../constants';
 import '../../lib/firebase-admin'
 import slugify from 'slugify';
 
@@ -27,10 +27,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 async function Upload(post: PostPublish, user: UserInfo) {
   const docRef = db.collection('posts').doc();
-  await docRef.set({
+  const docPost: PostStored = {
     post,
     user,
     slug: slugify(post.title, {lower:true, strict:true}),
-  });
+  }
+  await docRef.set(docPost);
   return docRef.id;
 }

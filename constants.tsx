@@ -11,8 +11,17 @@ export interface UserInfo {
   email: string | undefined,
   picture: string | undefined,
 }
-
+// type of post when publish from editor
 export interface PostPublish {
   title: string,
-  data: {}
+  data: {
+    blocks: [],
+    time: number
+  }
+}
+// type of post stored in firebase
+export interface PostStored {
+  post: PostPublish,
+  user: UserInfo,
+  slug: string
 }

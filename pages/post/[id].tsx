@@ -1,34 +1,45 @@
 import Head from 'next/head';
-import {useRouter} from 'next/router'
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+import {
+  GetServerSideProps,
+  GetStaticPaths,
+  GetStaticProps,
+  GetServerSidePropsContext,
+  PreviewData,
+  InferGetServerSidePropsType,
+  GetStaticPropsContext,
+} from 'next';
 import Sidebar from '../../components/sidebar';
 import Comments from '../../components/comments';
 import { Article, Main, Loading, Wrapper } from '../../components/elements';
 import PostCard from '../../components/post-card';
-import {Capitalize} from '../../lib/utils'
+import { Capitalize } from '../../lib/utils';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { ParsedUrlQuery } from 'querystring';
+import { PostStored, UserInfo } from '../../constants';
+import Parser from '../../lib/editorjs-parser';
 
-interface PostData {
-  title: string;
-  data: string;
-}
+const db = getFirestore();
 
 const images = ['f1', 'f2'];
 const fakeTitle = `It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`;
-
-export default function Post({ data, title }: PostData) {
-  const router = useRouter()
+//
+export default function Post({ data, title, user }: InferGetServerSidePropsType<typeof getStaticProps>) {
+  const router = useRouter();
+  let Content = <></>;
+  if (!router.isFallback) {
+    const parsedData = Parser(data.blocks, data.time);
+    Content = <article className='post'>{parsedData}</article>;
+  } else {
+    Content = <Loading />;
+  }
   return (
     <>
       <Head>
-        <title>{router.isFallback? 'Loading...' : Capitalize(title)}</title>
+        <title>{router.isFallback ? 'Loading...' : Capitalize(title)}</title>
       </Head>
       <Wrapper>
-        <Main>
-          {router.isFallback ? <Loading/> :
-          <Article props={{ title, data }} />
-        }
-          {/* <Comments /> */}
-        </Main>
+        <Main>{Content}</Main>
         <Sidebar>
           <div className='flex flex-col gap-5'>
             {/* {images.map((image, index) => (
@@ -41,40 +52,56 @@ export default function Post({ data, title }: PostData) {
   );
 }
 
-
-interface Params {
-  id: string
-}
-
-export const getStaticPaths:GetStaticPaths= ()=> {
+export const getStaticPaths: GetStaticPaths = params => {
+  console.log('static path params: ', params);
   return {
     paths: [
-      {
-        params: {
-          id: 'abc',
-        },
-      },
+      // {
+      //   params: {
+      //     id: 'abc',
+      //   },
+      // },
     ],
     fallback: true,
-
   };
-}
+};
 
+type Context = GetStaticPropsContext<ParsedUrlQuery, { postId: string }>;
 
+export const getStaticProps = async (context: Context) => {
+  console.log('context: ', context);
 
-export const getStaticProps:GetStaticProps = (context) => {
-  if(context.params?.id === 'abcd'){
-    console.log(context)
-    return {
-      notFound:true
+  let postData;
+  try {
+    if (context.previewData && context.previewData.postId) {
+      postData = await getPost(context.previewData.postId);
+      console.log('postData: ', postData);
     }
+  } catch (e) {
+    console.log('failed to load post: ', e);
+    return {
+      notFound: true,
+    };
   }
-  // console.log(context)
+  if (!postData) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: {
-      title: 'mario review',
-      data: `is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it?
-      It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).`,
+      title: postData.post.title,
+      data: postData?.post.data,
+      user: postData?.user,
     },
   };
+};
+
+async function getPost(postId: string) {
+  const docRef = doc(db, 'posts', postId);
+  const docSnap = await getDoc(docRef);
+  if (!docSnap.exists()) {
+    throw new Error('post does not exist');
+  }
+  return docSnap.data() as PostStored;
 }
