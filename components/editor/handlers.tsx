@@ -22,7 +22,7 @@ export const publishHandler = async (
   };
 
   try {
-    const sending = notify.show.loading(isPreview ? 'Preparing preview...' : 'Publishing post...', notify.default);
+    const sending = notify.loading(isPreview ? 'Preparing preview...' : 'Publishing post...');
     const res = await fetch('/api/publish', {
       method: 'POST',
       headers: {
@@ -32,7 +32,7 @@ export const publishHandler = async (
       },
       body: JSON.stringify(body),
     });
-    notify.hide(sending);
+    notify.dismiss(sending);
 
     if (!res.ok) {
       throw new Error('Failed to publish the post');
@@ -44,14 +44,14 @@ export const publishHandler = async (
       showPreview(json.postId);
       return;
     }
-    notify.show.success('Post successfully published', notify.default);
-    const redirecting = notify.show.loading('Redirecting to post', notify.default);
+    notify.success('Post successfully published');
+    const redirecting = notify.loading('Redirecting to post');
     router?.push(`/post/${json.slug}`).then(()=>{
-      notify.hide(redirecting);
+      notify.dismiss(redirecting);
     });
 
   } catch (e) {
-    notify.show.error('Failed to publish post', notify.default);
+    notify.error('Failed to publish post');
     console.error('Network Error: ', e);
   }
 };
@@ -71,7 +71,7 @@ export const draftHandler = async (editorInstance: React.MutableRefObject<any>, 
     title,
     data,
   });
-  notify.show.success('Saved!', notify.default);
+  notify.success('Saved!');
 };
 
 const saveToStorage = (data: {}) => {

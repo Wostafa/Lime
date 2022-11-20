@@ -34,12 +34,18 @@ export const Wrapper: StyledElement = ({ children }) => <div className='flex gap
 export const Loading = () => <Loader color='#26B093' size={32} className='animate-spin-slow mx-auto' />;
 
 export const notify = {
-  default: {
+  options: {
     position: 'bottom-center',
   } as ToastOptions,
-  show: toast,
-  hide: toast.dismiss,
+  success: function (msg: string, options?: ToastOptions) {
+    return toast.success(msg, options ? options : this.options);
+  },
+  error: function (msg: string, options?: ToastOptions) {
+    return toast.error(msg, options ? options : this.options);
+  },
+  loading: function (msg: string, options?: ToastOptions) {
+    return toast.loading(msg, options ? options : this.options);
+  },
+  dismiss: toast.dismiss,
   Loader: Toaster,
 };
-const p = toast.loading('ok');
-toast.dismiss(p);
