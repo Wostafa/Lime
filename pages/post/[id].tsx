@@ -14,7 +14,7 @@ import Comments from '../../components/comments';
 import { Article, Main, Loading, Wrapper } from '../../components/elements';
 import PostCard from '../../components/post-card';
 import { Capitalize } from '../../lib/utils';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, collection, getDocs, query, where } from 'firebase/firestore';
 import { ParsedUrlQuery } from 'querystring';
 import { PostStored, UserInfo } from '../../constants';
 import Parser from '../../lib/editorjs-parser';
@@ -52,21 +52,19 @@ export default function Post({ data, title, user }: InferGetServerSidePropsType<
   );
 }
 
-export const getStaticPaths: GetStaticPaths = params => {
+// ----------------
+export const getStaticPaths: GetStaticPaths = async params => {
   console.log('static path params: ', params);
+  const postSlugs = await getPostSlugs();
+  console.log('postIds: ', postSlugs);
   return {
-    paths: [
-      // {
-      //   params: {
-      //     id: 'abc',
-      //   },
-      // },
-    ],
+    paths: postSlugs,
     fallback: true,
   };
 };
 
-type Context = GetStaticPropsContext<ParsedUrlQuery, { postId: string }>;
+// ---------------
+type Context = GetStaticPropsContext<{ id: string }, { postId: string }>;
 
 export const getStaticProps = async (context: Context) => {
   console.log('context: ', context);
@@ -74,20 +72,26 @@ export const getStaticProps = async (context: Context) => {
   let postData;
   try {
     if (context.previewData && context.previewData.postId) {
-      postData = await getPost(context.previewData.postId, 'previews');
-      console.log('postData: ', postData);
+      postData = await getPreviewPost(context.previewData.postId);
+      console.log('postData preview: ', postData);
+
+    } else if (context.params) {
+      postData = await getRealPost(context.params.id);
+      console.log('postData real: ', postData);
     }
-  } catch (e) {
-    console.log('failed to load post: ', e);
+  } catch (e:any) {
+    console.log('failed to load post: ', e.message);
     return {
       notFound: true,
     };
   }
+
   if (!postData) {
     return {
       notFound: true,
     };
   }
+
   return {
     props: {
       title: postData.post.title,
@@ -97,11 +101,43 @@ export const getStaticProps = async (context: Context) => {
   };
 };
 
-async function getPost(postId: string, collection:string) {
-  const docRef = doc(db, collection, postId);
+// ------------------
+async function getPreviewPost(postId: string) {
+  const docRef = doc(db, 'previews', postId);
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) {
     throw new Error('post does not exist');
   }
   return docSnap.data() as PostStored;
+}
+
+// ------------------
+async function getRealPost(slug: string) {
+  const _query = query(collection(db, 'posts'), where('slug', '==', slug));
+  const querySnapshot = await getDocs(_query);
+  if (querySnapshot.size > 1) throw new Error('duplicated posts');
+  if(querySnapshot.empty) throw new Error('post does not exist');
+  return querySnapshot.docs[0].data() as PostStored;
+}
+
+// -------------------
+
+interface PostSlugs {
+  params: {
+    id: string;
+  };
+}
+
+async function getPostSlugs() {
+  const querySnapshot = await getDocs(collection(db, 'posts'));
+  const postIds: PostSlugs[] = [];
+  querySnapshot.forEach(doc => {
+    const data = doc.data() as PostStored;
+    postIds.push({
+      params: {
+        id: data.slug,
+      },
+    });
+  });
+  return postIds;
 }
