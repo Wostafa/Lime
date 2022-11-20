@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Button, Loading, notify } from '../elements';
 import { TOKEN_KEY } from '../../constants';
 import * as handlers from './handlers';
+import { useRouter } from 'next/router';
 
 const EDITOR_ID = 'editorjs';
 
@@ -14,8 +15,10 @@ export default function Editor() {
   const [isReady, setIsReady] = useState(false);
   const [title, setTitle] = useState('');
   const editorDomRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   
-  const publishHandler = () => handlers.publishHandler(editorInstance, title)
+
+  const publishHandler = () => handlers.publishHandler(editorInstance, title, false, router)
   const draftHandler = () => handlers.draftHandler(editorInstance, title)
   const previewHandler = () => handlers.publishHandler(editorInstance, title, true)
 

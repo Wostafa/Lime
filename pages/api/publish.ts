@@ -14,24 +14,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   try {
     const userInfo = await VerifyUser(req.headers.authorization);
-    const postId = await Upload(req.body, userInfo);
-    console.log('post published, id: ', postId)
+    const result = await Upload(req.body, userInfo, req.headers['x-is-preview'] as string );
+    console.log('post published, id: ', result.postId)
     res.status(200).json({
       message: 'post successfully published',
-      postId,
+      postId: result.postId,
+      slug: result.slug
     });
   } catch (e: any) {
     res.status(e.status || 500).json({ error: e.msg || 'failed to publish' });
   }
 }
 
-async function Upload(post: PostPublish, user: UserInfo) {
-  const docRef = db.collection('posts').doc();
+async function Upload(post: PostPublish, user: UserInfo, x_IsPreview: string) {
+  const collection = x_IsPreview ? 'previews' : 'posts'
+  const docRef = db.collection(collection).doc();
+  const slug = slugify(post.title, {lower:true, strict:true});
   const docPost: PostStored = {
     post,
     user,
-    slug: slugify(post.title, {lower:true, strict:true}),
+    slug
   }
   await docRef.set(docPost);
-  return docRef.id;
+  return {
+    postId: docRef.id,
+    slug
+  };
 }

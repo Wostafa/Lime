@@ -47,7 +47,7 @@ h3 {
   object-fit: contain;
 }
 
-.image-wrapper {
+.post .image-wrapper {
   position: relative;
   border-radius: 6px;
   padding-bottom: 50%;

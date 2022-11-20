@@ -74,7 +74,7 @@ export const getStaticProps = async (context: Context) => {
   let postData;
   try {
     if (context.previewData && context.previewData.postId) {
-      postData = await getPost(context.previewData.postId);
+      postData = await getPost(context.previewData.postId, 'previews');
       console.log('postData: ', postData);
     }
   } catch (e) {
@@ -97,8 +97,8 @@ export const getStaticProps = async (context: Context) => {
   };
 };
 
-async function getPost(postId: string) {
-  const docRef = doc(db, 'posts', postId);
+async function getPost(postId: string, collection:string) {
+  const docRef = doc(db, collection, postId);
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) {
     throw new Error('post does not exist');

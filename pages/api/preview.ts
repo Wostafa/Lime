@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function VerifyPost(postId: string) {
-  const docRef = db.collection('posts').doc(postId);
+  const docRef = db.collection('previews').doc(postId);
   const doc = await docRef.get();
   if (!doc.exists) throw new Error('post not found');
   console.log('post verified: ', doc.id);
