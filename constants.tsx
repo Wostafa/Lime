@@ -23,7 +23,8 @@ export interface PostPublish {
 export interface PostStored {
   post: PostPublish,
   user: UserInfo,
-  slug: string
+  slug: string,
+  id?: string // doc id for loading comments
 }
 
 export interface CardProps {

@@ -25,7 +25,7 @@ const db = getFirestore();
 const images = ['f1', 'f2'];
 const fakeTitle = `It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`;
 //
-export default function Post({ data, title, user }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Post({ data, title, user, id }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
   let Content = <></>;
   if (!router.isFallback) {
@@ -50,6 +50,7 @@ export default function Post({ data, title, user }: InferGetStaticPropsType<type
           </div>
         </Sidebar>
       </Wrapper>
+      {!router.isPreview && <Comments id={id as string}/>}
     </>
   );
 }
@@ -80,6 +81,7 @@ export const getStaticProps = async (context: Context) => {
 
     } else if (context.params) {
       postData = await getRealPost(context.params.id);
+
       console.log('::> postData real');
     }
   } catch (e:any) {
@@ -100,6 +102,7 @@ export const getStaticProps = async (context: Context) => {
       title: postData.post.title,
       data: postData?.post.data,
       user: postData?.user,
+      id: postData.id
     },
   };
 };
@@ -120,7 +123,11 @@ async function getRealPost(slug: string) {
   const querySnapshot = await getDocs(_query);
   if (querySnapshot.size > 1) throw new Error('duplicated posts');
   if(querySnapshot.empty) throw new Error('post does not exist');
-  return querySnapshot.docs[0].data() as PostStored;
+  // return querySnapshot.docs[0].data() as PostStored;
+  return{
+    id: querySnapshot.docs[0].id, // id for loading comments
+    ...querySnapshot.docs[0].data() as PostStored,
+  }
 }
 
 // -------------------
