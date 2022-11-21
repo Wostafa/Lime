@@ -25,3 +25,9 @@ export interface PostStored {
   user: UserInfo,
   slug: string
 }
+
+export interface CardProps {
+  slug: string;
+  image: string,
+  title: string;
+}

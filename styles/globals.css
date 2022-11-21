@@ -57,3 +57,7 @@ h3 {
   opacity: 0.8;
   font-size: 0.8rem;
 }
+
+.post .title-wrapper {
+  margin-bottom: 20px;
+}

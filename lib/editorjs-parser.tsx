@@ -11,7 +11,7 @@ export default function Parser(blocks: Array<any>, time: number) {
         // title
         if (data.level === 1) {
           h = (
-            <div key={block.id}>
+            <div className='title-wrapper' key={block.id}>
               <h1>{data.text}</h1>
               {date}
             </div>

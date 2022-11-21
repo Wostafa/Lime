@@ -25,7 +25,7 @@ async function VerifyPost(postId: string) {
   const docRef = db.collection('previews').doc(postId);
   const doc = await docRef.get();
   if (!doc.exists) throw new Error('post not found');
-  console.log('post verified: ', doc.id);
+  console.log('::> post verified: ', doc.id);
   return {
     postId: doc.id,
     slug: doc.data()?.slug,

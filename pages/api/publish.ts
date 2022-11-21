@@ -15,7 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const userInfo = await VerifyUser(req.headers.authorization);
     const result = await Upload(req.body, userInfo, req.headers['x-is-preview'] as string );
-    console.log('post published, id: ', result.postId)
+    console.log('::> post published, id: ', result.postId)
+    res.clearPreviewData()
     res.status(200).json({
       message: 'post successfully published',
       postId: result.postId,

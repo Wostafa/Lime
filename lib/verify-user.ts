@@ -7,7 +7,7 @@ export default async function VerifyUser(authorization:string | undefined): Prom
       getAuth()
         .verifyIdToken(authorization)
         .then(decodedToken => {
-          console.log('user is valid: ', {
+          console.log('::> user is valid: ', {
             email: decodedToken.email,
             exp: new Date(decodedToken.exp * 1000).toLocaleString()
           });
@@ -18,7 +18,7 @@ export default async function VerifyUser(authorization:string | undefined): Prom
           });
         })
         .catch(e => {
-          console.log('token is not valid: ', e);
+          console.log('::> token is not valid: ', e);
           reject({ msg: 'access denied', status: 401 });
         });
     } else {

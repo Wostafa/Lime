@@ -8,6 +8,7 @@ import {
   PreviewData,
   InferGetServerSidePropsType,
   GetStaticPropsContext,
+  InferGetStaticPropsType,
 } from 'next';
 import Sidebar from '../../components/sidebar';
 import Comments from '../../components/comments';
@@ -24,7 +25,7 @@ const db = getFirestore();
 const images = ['f1', 'f2'];
 const fakeTitle = `It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`;
 //
-export default function Post({ data, title, user }: InferGetServerSidePropsType<typeof getStaticProps>) {
+export default function Post({ data, title, user }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
   let Content = <></>;
   if (!router.isFallback) {
@@ -39,6 +40,7 @@ export default function Post({ data, title, user }: InferGetServerSidePropsType<
         <title>{router.isFallback ? 'Loading...' : Capitalize(title)}</title>
       </Head>
       <Wrapper>
+      {router.isPreview && <h5 className='fixed top-0 right-0 left-0 bg-orange-500 text-white font-medium py-2 text-center z-40'>Preview</h5> }
         <Main>{Content}</Main>
         <Sidebar>
           <div className='flex flex-col gap-5'>
@@ -54,11 +56,12 @@ export default function Post({ data, title, user }: InferGetServerSidePropsType<
 
 // ----------------
 export const getStaticPaths: GetStaticPaths = async params => {
-  console.log('static path params: ', params);
-  const postSlugs = await getPostSlugs();
-  console.log('postIds: ', postSlugs);
+  console.log('::> static path params: ', params);
+  // const postSlugs = await getPostSlugs();
+  // console.log('postIds: ', postSlugs);
   return {
-    paths: postSlugs,
+    // paths: postSlugs,
+    paths:[],
     fallback: true,
   };
 };
@@ -67,17 +70,17 @@ export const getStaticPaths: GetStaticPaths = async params => {
 type Context = GetStaticPropsContext<{ id: string }, { postId: string }>;
 
 export const getStaticProps = async (context: Context) => {
-  console.log('context: ', context);
+  console.log('::> context: ', context);
 
   let postData;
   try {
     if (context.previewData && context.previewData.postId) {
       postData = await getPreviewPost(context.previewData.postId);
-      console.log('postData preview: ', postData);
+      console.log('::> postData preview');
 
     } else if (context.params) {
       postData = await getRealPost(context.params.id);
-      console.log('postData real: ', postData);
+      console.log('::> postData real');
     }
   } catch (e:any) {
     console.log('failed to load post: ', e.message);
