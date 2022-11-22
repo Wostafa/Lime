@@ -5,6 +5,7 @@ import Editor from '../components/editor/editor';
 import { AuthContext } from '../lib/contexts';
 import { Login, Logout } from '../components/auth';
 import Sidebar from '../components/sidebar';
+import UserPosts from '../components/user-posts';
 
 export default function Profile() {
   const user = useContext(AuthContext);
@@ -26,9 +27,7 @@ export default function Profile() {
             </div>
           )}
         </Main>
-        <Sidebar>
-          <div className='bg-white h-fit min-h-[200px] w-full'></div>
-        </Sidebar>
+        <Sidebar>{user && <UserPosts />}</Sidebar>
       </Wrapper>
     </>
   );

@@ -12,7 +12,8 @@ module.exports = {
         'gray-darker': '#383333',
         'gray-lighter': '#EDEDED',
         'pink': '#F54A73',
-        'black10': "#0000001A"
+        'black10': "#0000001A",
+        'sky-blue-soft': '#eef5fa'
       },
       fontFamily: {
         sans: ['Open Sans', ...fontFamily.sans],
