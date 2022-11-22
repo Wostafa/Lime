@@ -1,7 +1,7 @@
 import { Button, notify } from './elements';
 import { ChangeEventHandler } from 'react';
 import { doc, getDoc, getFirestore, arrayUnion, updateDoc, setDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useContext, useState } from 'react';
 import { format } from 'date-fns';
 import { AuthContext } from '../lib/contexts';
@@ -18,14 +18,14 @@ const db = getFirestore();
 export default function Comments({ id }: { id: string }) {
   const user = useContext(AuthContext);
   const [isLoading, setLoading] = useState(false);
-  const [textarea, setTextarea] = useState('');
+  const [textareaValue, setTextareaValue] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
 
   const handlerTextarea: ChangeEventHandler<HTMLTextAreaElement> = e => {
-    setTextarea(e.target.value);
+    setTextareaValue(e.target.value);
   };
   const handlerSend: ChangeEventHandler<HTMLButtonElement> = async e => {
-    if (!textarea) {
+    if (!textareaValue) {
       notify.error('Comment is empty!');
       return;
     }
@@ -37,7 +37,7 @@ export default function Comments({ id }: { id: string }) {
         uid: currentUser?.uid,
         name: currentUser?.displayName || 'unnamed',
         time: Date.now(),
-        text: textarea,
+        text: textareaValue,
       };
       try {
         // init empty comment doc if does not exist
@@ -52,7 +52,7 @@ export default function Comments({ id }: { id: string }) {
         });
         notify.dismiss(sending);
         notify.success('Comment sent');
-        setTextarea('');
+        setTextareaValue('');
         await loadComments();
       } catch (e) {
         console.log('failed to send comment: ', e);
@@ -60,6 +60,12 @@ export default function Comments({ id }: { id: string }) {
         notify.dismiss(sending);
       }
     }
+  };
+
+  const handlerLogin = () => {
+    signInWithPopup(getAuth(), new GoogleAuthProvider()).then(result => {
+      console.log('user logged in: ', result.user.email);
+    });
   };
 
   const loadComments = async () => {
@@ -81,7 +87,13 @@ export default function Comments({ id }: { id: string }) {
           {isLoading ? 'Loading Comments...' : 'Show Comments'}
         </Button>
       )}
-      {user && <WriteComment handlerTextArea={handlerTextarea} textareaValue={textarea} handlerSend={handlerSend} />}
+      {user ? (
+        <WriteComment {...{ handlerTextarea, textareaValue, handlerSend }} />
+      ) : (
+        <Button className='w-full bg-pink' onClick={handlerLogin}>
+          Login to write comments
+        </Button>
+      )}
 
       <CommentsList comments={comments} />
       <notify.Loader />
@@ -90,19 +102,19 @@ export default function Comments({ id }: { id: string }) {
 }
 
 interface WriteCommentProps {
-  handlerTextArea: ChangeEventHandler<HTMLTextAreaElement>;
+  handlerTextarea: ChangeEventHandler<HTMLTextAreaElement>;
   handlerSend: ChangeEventHandler<HTMLButtonElement>;
   textareaValue: string;
 }
 
-const WriteComment = ({ handlerTextArea, handlerSend, textareaValue }: WriteCommentProps) => (
+const WriteComment = (props: WriteCommentProps) => (
   <div>
     <textarea
-      onChange={handlerTextArea}
-      value={textareaValue}
+      onChange={props.handlerTextarea}
+      value={props.textareaValue}
       className='w-full h-52 bg-white p-3 rounded-2xl resize-none focus:outline-1 focus:outline-slate-300'
     />
-    <Button onClick={handlerSend} className='bg-pink mt-3'>
+    <Button onClick={props.handlerSend} className='bg-pink mt-3'>
       Send
     </Button>
   </div>
