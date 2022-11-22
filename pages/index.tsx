@@ -3,7 +3,7 @@ import { blogName, PostStored,CardProps } from '../constants';
 import Featured from '../components/featured';
 import RecentPosts from '../components/recent-posts';
 import { getFirestore, collection, getDocs, query, limit, orderBy } from 'firebase/firestore';
-import { InferGetStaticPropsType } from 'next';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 
 const db = getFirestore();
 
@@ -22,7 +22,8 @@ export default function Home({cardsData}:InferGetStaticPropsType<typeof getStati
   );
 }
 
-export const getStaticProps = async() =>{
+export const getStaticProps:GetStaticProps = async() =>{
+  console.log('::> index getStaticProps')
   const _query = query(collection(db, 'posts'), limit(8), orderBy('post.data.time', 'desc'))
   const querySnapshot = await getDocs(_query);
   const postsArray: CardProps[] = []
@@ -39,6 +40,7 @@ export const getStaticProps = async() =>{
   return {
     props:{
       cardsData: postsArray
-    }
+    },
+    revalidate: 60
   }
 }

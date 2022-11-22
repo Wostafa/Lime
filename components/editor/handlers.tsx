@@ -44,6 +44,7 @@ export const publishHandler = async (
       showPreview(json.postId);
       return;
     }
+    window.localStorage.removeItem(EDITOR_DATA);
     notify.success('Post successfully published');
     const redirecting = notify.loading('Redirecting to post');
     router?.push(`/post/${json.slug}`).then(()=>{

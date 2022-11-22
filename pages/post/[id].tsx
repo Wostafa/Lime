@@ -1,30 +1,17 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import {
-  GetServerSideProps,
-  GetStaticPaths,
-  GetStaticProps,
-  GetServerSidePropsContext,
-  PreviewData,
-  InferGetServerSidePropsType,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-} from 'next';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Sidebar from '../../components/sidebar';
 import Comments from '../../components/comments';
-import { Article, Main, Loading, Wrapper } from '../../components/elements';
+import { Main, Loading, Wrapper } from '../../components/elements';
 import PostCard from '../../components/post-card';
 import { Capitalize } from '../../lib/utils';
 import { doc, getDoc, getFirestore, collection, getDocs, query, where } from 'firebase/firestore';
-import { ParsedUrlQuery } from 'querystring';
-import { PostStored, UserInfo } from '../../constants';
+import { PostStored } from '../../constants';
 import Parser from '../../lib/editorjs-parser';
 
 const db = getFirestore();
 
-const images = ['f1', 'f2'];
-const fakeTitle = `It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`;
-//
 export default function Post({ data, title, user, id }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
   let Content = <></>;
@@ -40,7 +27,11 @@ export default function Post({ data, title, user, id }: InferGetStaticPropsType<
         <title>{router.isFallback ? 'Loading...' : Capitalize(title)}</title>
       </Head>
       <Wrapper>
-      {router.isPreview && <h5 className='fixed top-0 right-0 left-0 bg-orange-500 text-white font-medium py-2 text-center z-40'>Preview</h5> }
+        {router.isPreview && (
+          <h5 className='fixed top-0 right-0 left-0 bg-orange-500 text-white font-medium py-2 text-center z-40'>
+            Preview
+          </h5>
+        )}
         <Main>{Content}</Main>
         <Sidebar>
           <div className='flex flex-col gap-5'>
@@ -50,7 +41,7 @@ export default function Post({ data, title, user, id }: InferGetStaticPropsType<
           </div>
         </Sidebar>
       </Wrapper>
-      {!router.isPreview && <Comments id={id as string}/>}
+      {!router.isPreview && <Comments id={id as string} />}
     </>
   );
 }
@@ -78,13 +69,12 @@ export const getStaticProps = async (context: Context) => {
     if (context.previewData && context.previewData.postId) {
       postData = await getPreviewPost(context.previewData.postId);
       console.log('::> postData preview');
-
     } else if (context.params) {
       postData = await getRealPost(context.params.id);
 
       console.log('::> postData real');
     }
-  } catch (e:any) {
+  } catch (e: any) {
     console.log('failed to load post: ', e.message);
     return {
       notFound: true,
@@ -102,7 +92,7 @@ export const getStaticProps = async (context: Context) => {
       title: postData.post.title,
       data: postData?.post.data,
       user: postData?.user,
-      id: postData.id
+      id: postData.id,
     },
   };
 };
@@ -122,12 +112,12 @@ async function getRealPost(slug: string) {
   const _query = query(collection(db, 'posts'), where('slug', '==', slug));
   const querySnapshot = await getDocs(_query);
   if (querySnapshot.size > 1) throw new Error('duplicated posts');
-  if(querySnapshot.empty) throw new Error('post does not exist');
+  if (querySnapshot.empty) throw new Error('post does not exist');
   // return querySnapshot.docs[0].data() as PostStored;
-  return{
+  return {
     id: querySnapshot.docs[0].id, // id for loading comments
-    ...querySnapshot.docs[0].data() as PostStored,
-  }
+    ...(querySnapshot.docs[0].data() as PostStored),
+  };
 }
 
 // -------------------

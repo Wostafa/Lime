@@ -72,6 +72,7 @@ export default function Editor() {
     return () => {
       if (!editorInstance.current || !editorInstance.current.saver) return;
       editorInstance.current.destroy();
+      editorInstance.current = null;
     };
   }, []);
 
@@ -88,7 +89,7 @@ export default function Editor() {
           id='title'
           className='rounded-2xl border-gray-200 border-2 p-3 outline-1 outline-gray-500 max-w-md w-full mt-2 block'
         />
-        <div className='rounded-2xl p-9 bg-[#eef5fa] mt-5'>
+        <div className='rounded-2xl p-4 bg-[#eef5fa] mt-5'>
           <div
             ref={editorDomRef}
             className='rounded-lg shadow-md bg-white py-2 opacity-80 focus-within:opacity-100'

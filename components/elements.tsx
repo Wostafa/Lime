@@ -26,7 +26,11 @@ export const Article: StyledElement = ({ props }) => (
 );
 
 export const Main: StyledElement = ({ children }) => (
-  <div className='flex-[2.5_1_0%] bg-white rounded-2xl pl-20 pr-20 py-20'>{children}</div>
+  <div className='flex-[2.7_1_0%] bg-white rounded-2xl'>
+    {/* adding another div to set padding, because
+    setting padding to a flex box change its size */}
+    <div className='p-20'>{children}</div>
+  </div>
 );
 
 export const Wrapper: StyledElement = ({ children }) => <div className='flex gap-4'>{children}</div>;
