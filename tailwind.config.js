@@ -22,6 +22,11 @@ module.exports = {
         'spin-slow': 'spin 1.7s linear infinite',
       }
     },
+    screens: {
+      'lg': {'max': '1023px'},
+      'md': {'max': '767px'},
+      'sm': {'max': '639px'},
+    }
   },
   plugins: [],
 };

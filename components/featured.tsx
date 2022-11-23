@@ -4,7 +4,7 @@ import { CardProps } from '../constants';
 
 export default function Featured({featuredData}:{featuredData: CardProps[]}) {
   return (
-    <div className='w-full grid grid-cols-[repeat(40,_1fr)] gap-6'>
+    <div className='w-full grid grid-cols-[repeat(40,_1fr)] gap-6 lg:gap-4 md:gap-3'>
       <Card featuredData={featuredData}/>
     </div>
   );

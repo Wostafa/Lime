@@ -4,9 +4,8 @@ import { blogName } from '../constants';
 export default function Footer() {
   return (
     <footer className='w-full mt-auto pt-16'>
-      <div className='px-6 py-8 rounded-t-2xl bg-stone-100'>
-
-      <div className='flex gap-3 text-slate-600'>
+      <div className='px-6 py-8 rounded-t-2xl bg-stone-100 sm:-mx-3'>
+      <div className='flex gap-3 text-slate-600 md:flex-col md:gap-7'>
         <SocialIcons />
         <Tags />
         <About />
@@ -28,8 +27,8 @@ const SocialIcons = () => {
   );
   return (
     <div className='flex-1'>
-      <h5 className='font-bold'>Follow us on social media</h5>
-      <div className='flex gap-3 mt-4'>
+      <h5 className='font-bold md:text-center'>Follow us on social media</h5>
+      <div className='flex gap-3 mt-4 md:justify-center'>
         <Social Icon={Twitter} link='#' />
         <Social Icon={Instagram} link='#' />
         <Social Icon={Facebook} link='#' />
@@ -55,8 +54,8 @@ const Tags = () => {
 
   return (
     <div className='flex-1'>
-      <h5 className='font-bold'>Explore more</h5>
-      <div className='flex gap-3 mt-4 flex-wrap'>{tags}</div>
+      <h5 className='font-bold md:text-center'>Explore more</h5>
+      <div className='flex gap-3 mt-4 flex-wrap md:justify-center'>{tags}</div>
     </div>
   );
 };
@@ -64,7 +63,7 @@ const Tags = () => {
 const About = () => {
   return (
     <div className='flex-1'>
-      <h5 className='font-bold capitalize'>about {blogName}</h5>
+      <h5 className='font-bold capitalize md:text-center'>about {blogName}</h5>
       <p className='mt-4'>
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry
         standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make

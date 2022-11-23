@@ -34,7 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <AuthContext.Provider value={user}>
-      <div className='w-full max-w-6xl mx-auto flex flex-col h-full'>
+      <div className='w-full max-w-6xl mx-auto flex flex-col h-full px-3'>
         <Navbar />
         <Component {...pageProps} />
         <Footer />

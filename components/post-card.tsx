@@ -19,7 +19,7 @@ export default function PostCard({ title, link, image }: CardProps) {
         <Image src={image} alt='' fill className='object-cover group-hover:scale-110 transition-transform' sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
         </div>
         <div
-          className='absolute bg-white bottom-0 h-fit min-h-[40%] max-h-[50%] overflow-hidden rounded-t-2xl'
+          className='absolute bg-white bottom-0 h-fit min-h-[40%] max-h-[50%] overflow-hidden rounded-t-2xl w-full'
         >
           <p className='capitalize text-lg font-semibold m-4'>{title}</p>
         </div>
