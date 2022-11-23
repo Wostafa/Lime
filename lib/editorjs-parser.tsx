@@ -27,7 +27,7 @@ export default function Parser(blocks: Array<any>, time: number) {
       case 'image':
         return (
           <div key={block.id} className='image-wrapper'>
-            <Image src={data.file.url} fill alt={data.caption} />
+            <Image src={data.file.url} fill alt={data.caption} sizes='(max-width:1023px) 75vw, (max-width:767px) 85vw, (max-width: 639px) 90vw, 50vw' />
           </div>
         );
       default:
