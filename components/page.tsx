@@ -16,7 +16,7 @@ export default function Page({ title, data, sidebar }: PageProps) {
       <Head>
         <title>{Capitalize(title)}</title>
       </Head>
-      <Wrapper>
+      <Wrapper className='lg:flex-col sm:-mx-3'>
         <Main>
           <Article props={{ title, data }} />
         </Main>

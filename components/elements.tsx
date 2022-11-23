@@ -25,15 +25,15 @@ export const Article: StyledElement = ({ props }) => (
   </article>
 );
 
-export const Main: StyledElement = ({ children }) => (
+export const Main: StyledElement = ({ children, className='' }) => (
   <div className='flex-[2.7_1_0%] bg-white rounded-2xl'>
     {/* adding another div to set padding, because
     setting padding to a flex box change its size */}
-    <div className='p-20'>{children}</div>
+    <div className={`p-20 ${className}`}>{children}</div>
   </div>
 );
 
-export const Wrapper: StyledElement = ({ children }) => <div className='flex gap-4'>{children}</div>;
+export const Wrapper: StyledElement = ({ children, className='' }) => <div className={`flex gap-4 ${className}`}>{children}</div>;
 
 export const Loading = () => <Loader color='#26B093' size={32} className='animate-spin-slow mx-auto' />;
 

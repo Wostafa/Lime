@@ -14,19 +14,21 @@ export default function Profile() {
       <Head>
         <title>Profile</title>
       </Head>
-      <Wrapper>
-        <Main>
+      <Wrapper className='lg:flex-col sm:-mx-3'>
+        <main className='flex-[2.7_1_0%] bg-white rounded-2xl lg:flex-none'>
+          <div className='p-4'>
           {user === null && <Loading />}
           {user === false && <Login />}
           {user && (
-            <div className='w-auto flex flex-col -m-16'>
+            <div className='w-auto flex flex-col'>
               <div className='self-end'>
                 <Logout />
               </div>
               <Editor />
             </div>
           )}
-        </Main>
+          </div>
+        </main>
         <Sidebar>{user && <UserPosts />}</Sidebar>
       </Wrapper>
     </>

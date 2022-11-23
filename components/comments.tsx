@@ -81,7 +81,7 @@ export default function Comments({ id }: { id: string }) {
     setLoading(false);
   };
   return (
-    <div className='mt-12 rounded-2xl w-full max-w-3xl p-4 bg-black10'>
+    <div className='mt-12 rounded-2xl w-full max-w-3xl p-4 bg-black10 sm:-mx-3 sm:w-auto'>
       {comments.length === 0 && (
         <Button className='w-full bg-green mb-4' onClick={loadComments}>
           {isLoading ? 'Loading Comments...' : 'Show Comments'}

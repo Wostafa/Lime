@@ -77,7 +77,7 @@ export default function UserPosts() {
 const PostList = ({ posts, handlerDelete }: { posts: Post[]; handlerDelete: MouseEventHandler }) => (
   <ul className='space-y-2 font-semibold text-sm'>
     {posts.map((post, index) => (
-      <li key={index} className='relative bg-gray-100 rounded-md p-2 text-gray-700 hover:text-blue-600'>
+      <li key={index} className='relative bg-gray-100 rounded-md p-2 text-gray-700 hover:text-blue-600 lg:p-4'>
         <a href={post.link} className='block' target='blank'>
           {post.title}
         </a>
@@ -86,7 +86,7 @@ const PostList = ({ posts, handlerDelete }: { posts: Post[]; handlerDelete: Mous
           data-slug={post.slug}
           onClick={handlerDelete}
           title='Delete post'
-          className='w-fit p-1 rounded-md absolute right-1 top-1 bg-white opacity-50 hover:opacity-100'
+          className='w-fit p-1 rounded-md absolute right-1 top-1 bg-white opacity-50 hover:opacity-100 lg:p-2'
         >
           <Trash size={20} color='#F54A73' />
           <span className='sr-only'>delete post</span>

@@ -4,7 +4,6 @@ import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from '
 import Sidebar from '../../components/sidebar';
 import Comments from '../../components/comments';
 import { Main, Loading, Wrapper } from '../../components/elements';
-import PostCard from '../../components/post-card';
 import { Capitalize } from '../../lib/utils';
 import { doc, getDoc, getFirestore, collection, getDocs, query, where } from 'firebase/firestore';
 import { PostStored } from '../../constants';
@@ -26,19 +25,14 @@ export default function Post({ data, title, user, id }: InferGetStaticPropsType<
       <Head>
         <title>{router.isFallback ? 'Loading...' : Capitalize(title)}</title>
       </Head>
-      <Wrapper>
+      <Wrapper className='lg:flex-col sm:-mx-3'>
         {router.isPreview && (
           <h5 className='fixed top-0 right-0 left-0 bg-orange-500 text-white font-medium py-2 text-center z-40'>
             Preview
           </h5>
         )}
-        <Main>{Content}</Main>
+        <Main className='md:px-5 md:py-8'>{Content}</Main>
         <Sidebar>
-          <div className='flex flex-col gap-5'>
-            {/* {images.map((image, index) => (
-              <PostCard key={index} link='' image={`/temp-images/${image}.jpg`} title={fakeTitle} />
-            ))} */}
-          </div>
         </Sidebar>
       </Wrapper>
       {!router.isPreview && <Comments id={id as string} />}

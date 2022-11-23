@@ -87,16 +87,16 @@ export default function Editor() {
           onChange={titleHandler}
           type='text'
           id='title'
-          className='rounded-2xl border-gray-200 border-2 p-3 outline-1 outline-gray-500 max-w-md w-full mt-2 block'
+          className='rounded-2xl border-gray-200 border-2 p-3 outline-1 outline-gray-400 max-w-md w-full mt-2 block'
         />
-        <div className='rounded-2xl p-4 bg-sky-blue-soft mt-5'>
+        <div className='rounded-2xl p-4 bg-sky-blue-soft mt-5 md:p-0 md:bg-white'>
           <div
             ref={editorDomRef}
-            className='rounded-lg shadow-md bg-white py-2 opacity-80 focus-within:opacity-100'
+            className='rounded-lg bg-white p-2 opacity-80 focus-within:border-gray-400 border-2 border-gray-200'
             id={EDITOR_ID}
           ></div>
         </div>
-        <div className='flex gap-5 items-baseline mt-5'>
+        <div className='flex gap-5 items-baseline mt-5 sm:gap-2 flex-wrap'>
           <Button className='bg-lime-500 w-fit' onClick={publishHandler}>
             Publish
           </Button>
