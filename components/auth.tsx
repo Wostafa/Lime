@@ -15,10 +15,10 @@ export function Login() {
       });
   };
   return (
-    <div className='w-fit m-auto text-center space-y-5'>
+    <div className='w-fit m-auto text-center space-y-5 my-6'>
       <h4 className='font-bold'>You must login to access your profile</h4>
       <p>By logging in you are able to manage your post and write new posts</p>
-      <Button className='bg-lime-500' onClick={loginHandler}>
+      <Button data-test='btn-login' className='bg-lime-500' onClick={loginHandler}>
         Login
       </Button>
     </div>

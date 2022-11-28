@@ -1,14 +1,42 @@
 /// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
+import { getAuth, signInWithCustomToken } from 'firebase/auth';
+import { app } from '../../lib/firebase';
+require('dotenv').config({ path: '.env.local' });
 //
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
+const auth = getAuth(app);
+
+Cypress.Commands.add('getByTest', (selector: string, ...args: any) => {
+  return cy.get(`[data-test=${selector}]`, ...args);
+});
+
+Cypress.Commands.add('login', () => {
+  if (auth.currentUser) {
+    cy.log('User already logged in: ', auth.currentUser.email);
+    return;
+  }
+  cy.log('User is not logged in, logging...');
+  cy.task('createCustomToken').then(token => {
+    signInWithCustomToken(auth, token)
+      .then(userCredential => {
+        cy.log(`user logged in with custom token: ${userCredential.user.email}`);
+        console.log('::> user logged in with custom token: ', userCredential);
+      })
+      .catch(e => {
+        console.log('::> failed to login with custom token: ', e);
+      });
+  });
+});
+
+Cypress.Commands.add('logout', ()=>{
+  if(!auth.currentUser) {
+    cy.log('no user is logged in');
+    return
+  }
+  cy.log('logging out...');
+  auth.signOut();
+})
+
+
 //
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
