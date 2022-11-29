@@ -18,6 +18,7 @@ const Card = ({ featuredData }: { featuredData: CardProps[] }) => {
       href={`/post/${data.slug}`}
       className={`block group relative rounded-2xl overflow-hidden ${colorsBorder[index]} border-r-4 border-b-4 h-72 col-[span_19_/_span_19] first:col-[span_21_/_span_21] last:col-[span_21_/_span_21]`}
       key={index}
+      data-test='link-feature'
     >
       {/* TODO: edit sizes */}
       <Image src={data.image} alt='' fill className='object-cover absolute left-0 top-0' sizes='50vw' />

@@ -36,7 +36,7 @@ export function Logout() {
       });
   };
   return (
-    <Button className='bg-pink' onClick={logoutHandler}>
+    <Button data-test='btn-logout' className='bg-pink' onClick={logoutHandler}>
       Logout
     </Button>
   );
