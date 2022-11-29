@@ -114,7 +114,7 @@ const WriteComment = (props: WriteCommentProps) => (
       value={props.textareaValue}
       className='w-full h-52 bg-white p-3 rounded-2xl resize-none focus:outline-1 focus:outline-slate-300'
     />
-    <Button onClick={props.handlerSend} className='bg-pink mt-3'>
+    <Button data-test='btn-send' onClick={props.handlerSend} className='bg-pink mt-3'>
       Send
     </Button>
   </div>
@@ -123,7 +123,7 @@ const WriteComment = (props: WriteCommentProps) => (
 const CommentsList = ({ comments }: { comments: Comment[] }) => (
   <ul className='mt-4'>
     {comments.map((comment, index) => (
-      <li key={index} className='bg-gray-50 rounded-2xl py-5 px-6 mb-3 last:mb-0'>
+      <li data-test='comment' key={index} className='bg-gray-50 rounded-2xl py-5 px-6 mb-3 last:mb-0'>
         <h5 className='font-semibold capitalize'>{comment.name}</h5>
         <time className='mt-2 opacity-70 text-xs'>{format(comment.time, 'PPp')}</time>
         <p className='mt-3'>{comment.text}</p>

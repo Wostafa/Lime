@@ -56,7 +56,7 @@ export const getStaticPaths: GetStaticPaths = async params => {
 type Context = GetStaticPropsContext<{ id: string }, { postId: string }>;
 
 export const getStaticProps = async (context: Context) => {
-  console.log('::> context: ', context);
+  console.log('::> params.id: ', context.params?.id);
 
   let postData;
   try {

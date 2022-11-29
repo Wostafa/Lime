@@ -19,25 +19,21 @@ Cypress.Commands.add('getByTest', (selector: string, ...args: any) => {
   return cy.get(`[data-test=${selector}]`, ...args);
 });
 
-Cypress.Commands.add('login', (): Promise<void> => {
+Cypress.Commands.add('login', () => {
   if (auth.currentUser) {
     cy.log('User already logged in: ', auth.currentUser.email);
     return;
   }
   cy.log('User is not logged in, logging...');
-  return new Promise((resolve, reject) => {
     cy.task('createCustomToken').then(token => {
       signInWithCustomToken(auth, token)
         .then(userCredential => {
           cy.log(`user logged in with custom token: ${userCredential.user.email}`);
           console.log('::> user logged in with custom token: ', userCredential);
-          resolve();
         })
         .catch(e => {
-          reject();
           console.log('::> failed to login with custom token: ', e);
         });
-    });
   });
 });
 
@@ -49,6 +45,10 @@ Cypress.Commands.add('logout', () => {
   cy.log('logging out...');
   auth.signOut();
 });
+
+Cypress.Commands.add('userDisplayName', ()=>{
+  return cy.wrap(auth.currentUser.displayName)
+})
 
 //
 // -- This is a parent command --
@@ -76,3 +76,6 @@ Cypress.Commands.add('logout', () => {
 //     }
 //   }
 // }
+
+
+
