@@ -21,7 +21,8 @@ export default function Profile() {
           {user === false && <Login />}
           {user && (
             <div className='w-auto flex flex-col'>
-              <div className='self-end'>
+              <div className='flex justify-between'>
+                <h3 className='mb-4 font-bold'>Write New Post</h3>
                 <Logout />
               </div>
               <Editor />

@@ -35,7 +35,7 @@ export const Main: StyledElement = ({ children, className='' }) => (
 
 export const Wrapper: StyledElement = ({ children, className='' }) => <div className={`flex gap-4 ${className}`}>{children}</div>;
 
-export const Loading = () => <Loader color='#26B093' size={32} className='animate-spin-slow mx-auto' />;
+export const Loading = () => <Loader data-test='loading' color='#26B093' size={32} className='animate-spin-slow mx-auto' />;
 
 export const notify = {
   options: {
@@ -49,6 +49,9 @@ export const notify = {
   },
   loading: function (msg: string, options?: ToastOptions) {
     return toast.loading(msg, options ? options : this.options);
+  },
+  custom: function (msg:any, options?: ToastOptions){
+    return toast(msg, options ? options : this.options)
   },
   dismiss: toast.dismiss,
   Loader: Toaster,

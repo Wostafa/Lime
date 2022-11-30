@@ -21,7 +21,7 @@ export default function Editor() {
   const publishHandler = () => handlers.publishHandler(editorInstance, title, false, router)
   const draftHandler = () => handlers.draftHandler(editorInstance, title)
   const previewHandler = () => handlers.publishHandler(editorInstance, title, true)
-
+  
   const titleHandler: React.ChangeEventHandler<HTMLInputElement> = e => {
     setTitle(e.target.value);
   };
@@ -79,10 +79,10 @@ export default function Editor() {
   return (
     <>
       {!isReady && <Loading />}
-
       <div className={`${isReady ? 'block' : 'hidden'}`}>
         <label htmlFor='title'>Title:</label>
         <input
+          data-test='input-title'
           value={title}
           onChange={titleHandler}
           type='text'
@@ -91,19 +91,20 @@ export default function Editor() {
         />
         <div className='rounded-2xl p-4 bg-sky-blue-soft mt-5 md:p-0 md:bg-white'>
           <div
+            data-test='wrapper-editor'
             ref={editorDomRef}
             className='rounded-lg bg-white p-2 opacity-80 focus-within:border-gray-400 border-2 border-gray-200'
             id={EDITOR_ID}
           ></div>
         </div>
         <div className='flex gap-5 items-baseline mt-5 sm:gap-2 flex-wrap'>
-          <Button className='bg-lime-500 w-fit' onClick={publishHandler}>
+          <Button data-test='btn-publish' className='bg-lime-500 w-fit' onClick={publishHandler}>
             Publish
           </Button>
-          <Button className='bg-cyan-500 w-fit' onClick={draftHandler}>
+          <Button data-test='btn-draft' className='bg-cyan-500 w-fit' onClick={draftHandler}>
             Save Draft
           </Button>
-          <Button className='bg-amber-500 w-fit' onClick={previewHandler}>
+          <Button data-test='btn-preview' className='bg-amber-500 w-fit' onClick={previewHandler}>
             Preview
           </Button>
         </div>

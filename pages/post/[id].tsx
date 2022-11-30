@@ -27,7 +27,7 @@ export default function Post({ data, title, user, id }: InferGetStaticPropsType<
       </Head>
       <Wrapper className='lg:flex-col sm:-mx-3'>
         {router.isPreview && (
-          <h5 className='fixed top-0 right-0 left-0 bg-orange-500 text-white font-medium py-2 text-center z-40'>
+          <h5 data-test='preview-bar' className='fixed top-0 right-0 left-0 bg-orange-500 text-white font-medium py-2 text-center z-40'>
             Preview
           </h5>
         )}
@@ -65,8 +65,6 @@ export const getStaticProps = async (context: Context) => {
       console.log('::> postData preview');
     } else if (context.params) {
       postData = await getRealPost(context.params.id);
-
-      console.log('::> postData real');
     }
   } catch (e: any) {
     console.log('failed to load post: ', e.message);
@@ -86,7 +84,7 @@ export const getStaticProps = async (context: Context) => {
       title: postData.post.title,
       data: postData?.post.data,
       user: postData?.user,
-      id: postData.id,
+      id: postData.id ? postData.id : null // just for loading comments, unnecessary for preview
     },
   };
 };

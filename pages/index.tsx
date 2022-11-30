@@ -23,7 +23,6 @@ export default function Home({cardsData}:InferGetStaticPropsType<typeof getStati
 }
 
 export const getStaticProps:GetStaticProps = async() =>{
-  console.log('::> index getStaticProps')
   const _query = query(collection(db, 'posts'), limit(8), orderBy('post.data.time', 'desc'))
   const querySnapshot = await getDocs(_query);
   const postsArray: CardProps[] = []
@@ -33,7 +32,7 @@ export const getStaticProps:GetStaticProps = async() =>{
     postsArray.push({
       slug: postData.slug,
       title: postData.post.title,
-      image: image?.data.file.url
+      image: image?.data.file.url || null
     })
   })
 

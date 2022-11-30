@@ -54,7 +54,7 @@ export default function UserPosts() {
         await deleteDoc(doc(db, 'posts', uid));
         await revalidatePost(slug);
         notify.dismiss(deleting);
-        notify.success('Post removed');
+        notify.success('Post deleted');
         setPostsUpdated(Date.now());
       } catch (e) {
         notify.dismiss(deleting);
@@ -65,7 +65,7 @@ export default function UserPosts() {
   };
 
   return (
-    <div className='bg-white h-fit min-h-[200px] w-full p-4'>
+    <div data-test='user-posts' className='bg-white h-fit min-h-[200px] w-full p-4'>
       <h3 className='mb-4 text-center font-bold'>Your Posts</h3>
       {posts.length > 0 && <PostList {...{ posts, handlerDelete }} />}
       {posts.length === 0 && isLoading && <Loading />}
@@ -82,6 +82,7 @@ const PostList = ({ posts, handlerDelete }: { posts: Post[]; handlerDelete: Mous
           {post.title}
         </a>
         <button
+          data-test='btn-remove'
           data-uid={post.uid}
           data-slug={post.slug}
           onClick={handlerDelete}

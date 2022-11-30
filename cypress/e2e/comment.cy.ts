@@ -26,15 +26,14 @@ describe('comment section should work well', () => {
         });
       });
 
-    context('comment list should not be zero', () => {
-      cy.reload();
-      cy.wait(5000); // wait for firebase db instance to set up
-      cy.get('button')
-        .contains(/show comment/i)
-        .as('send');
-      cy.get('@send').click();
-      cy.get('@send').contains(/loading comments/i);
-      cy.getByTest('comment').should('have.length.above', 0);
-    });
+    // show comment button should work
+    cy.reload();
+    cy.wait(5000); // wait for firebase db instance to set up
+    cy.get('button')
+      .contains(/show comment/i)
+      .as('send');
+    cy.get('@send').click();
+    cy.get('@send').contains(/loading comments/i);
+    cy.getByTest('comment').should('have.length.above', 0);
   });
 });

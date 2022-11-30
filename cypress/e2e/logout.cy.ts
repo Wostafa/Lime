@@ -1,5 +1,3 @@
-/// <reference types="cypress" />
-
 describe('logout state should be consistent in all pages', () => {
   before(()=>{
     cy.visit('/')

@@ -1,4 +1,4 @@
-import { menuItems, blogName } from '../../constants';
+import { menuItems, blogName } from '../constants';
 import Link from 'next/link';
 
 export default function Navbar() {

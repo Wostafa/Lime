@@ -47,10 +47,9 @@ export const publishHandler = async (
     window.localStorage.removeItem(EDITOR_DATA);
     notify.success('Post successfully published');
     const redirecting = notify.loading('Redirecting to post');
-    router?.push(`/post/${json.slug}`).then(()=>{
+    router?.push(`/post/${json.slug}`).then(() => {
       notify.dismiss(redirecting);
     });
-
   } catch (e) {
     notify.error('Failed to publish post');
     console.error('Network Error: ', e);
@@ -60,10 +59,25 @@ export const publishHandler = async (
 export const showPreview = (postId: string) => {
   const secret = sessionStorage.getItem(TOKEN_KEY);
   const url = `/api/preview?secret=${secret}&postId=${postId}`;
-  // does not work when called directly
-  (() => {
-    window.open(url, '_blank');
-  })();
+
+  notify.custom(
+    (toast: any) => {
+      return (
+        <div data-test='notify-preview'>
+          <span>Preview is ready:</span>
+          <a
+            className='text-sky-500 ml-2 hover:underline'
+            onClick={() => notify.dismiss(toast.id)}
+            href={url}
+            target='blank'
+          >
+            See Preview
+          </a>
+        </div>
+      );
+    },
+    { duration: 60000, position: 'bottom-center' }
+  );
 };
 
 export const draftHandler = async (editorInstance: React.MutableRefObject<any>, title: string) => {

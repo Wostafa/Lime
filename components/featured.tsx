@@ -20,8 +20,7 @@ const Card = ({ featuredData }: { featuredData: CardProps[] }) => {
       key={index}
       data-test='link-feature'
     >
-      {/* TODO: edit sizes */}
-      <Image src={data.image} alt='' fill className='object-cover absolute left-0 top-0' sizes='50vw' />
+      {data.image && <Image src={data.image} alt='' fill className='object-cover absolute left-0 top-0' sizes='50vw' />}
       <div
         className={`bg-gradient-to-t ${colorsGradient[index]} absolute left-0 top-0 right-0 bottom-0 opacity-70 group-hover:opacity-0 transition-opacity duration-200`}
       ></div>
