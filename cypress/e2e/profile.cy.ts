@@ -71,4 +71,10 @@ describe('profile', () => {
         cy.contains('404', { timeout: 10000 });
       });
   });
+
+  it('user displayName should be shown in profile', ()=>{
+    cy.userDisplayName().then(displayName=>{
+      cy.contains(displayName)
+    })
+  })
 });
