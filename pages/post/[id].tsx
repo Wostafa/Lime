@@ -43,11 +43,9 @@ export default function Post({ data, title, user, id }: InferGetStaticPropsType<
 // ----------------
 export const getStaticPaths: GetStaticPaths = async params => {
   console.log('::> static path params: ', params);
-  // const postSlugs = await getPostSlugs();
-  // console.log('postIds: ', postSlugs);
+  const postSlugs = await getPostSlugs();
   return {
-    // paths: postSlugs,
-    paths:[],
+    paths: postSlugs,
     fallback: true,
   };
 };
@@ -105,7 +103,6 @@ async function getRealPost(slug: string) {
   const querySnapshot = await getDocs(_query);
   if (querySnapshot.size > 1) throw new Error('duplicated posts');
   if (querySnapshot.empty) throw new Error('post does not exist');
-  // return querySnapshot.docs[0].data() as PostStored;
   return {
     id: querySnapshot.docs[0].id, // id for loading comments
     ...(querySnapshot.docs[0].data() as PostStored),
@@ -113,7 +110,6 @@ async function getRealPost(slug: string) {
 }
 
 // -------------------
-
 interface PostSlugs {
   params: {
     id: string;

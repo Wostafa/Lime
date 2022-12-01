@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try{
     console.log('::> revalidating...')
@@ -10,8 +9,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log('::> failed to revalidate: ', e)
     res.status(500).json({msg: 'failed to revalidate'})
   }
-
-
 }
 
 
