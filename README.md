@@ -1,7 +1,7 @@
 
 <div align='center'>
 <h1 align='center'>Lime - Next.js Blog</h1>
-<h2 align='center'>Firebase + Vercel</h2>
+<h3 align='center'>Firebase + Vercel</h3>
 <a href='#'>Live Demo</a>
 |
 <a href='https://github.com/Wostafa/Lime#features'>Features</a>
