@@ -2,7 +2,7 @@
 <div align='center'>
 <h1 align='center'>Lime - Next.js Blog</h1>
 <h3 align='center'>Firebase + Vercel</h3>
-<a href='#'>Live Demo</a>
+<a href='https://lime-blog.vercel.app'>Live Demo</a>
 |
 <a href='https://github.com/Wostafa/Lime#features'>Features</a>
 |
@@ -15,7 +15,7 @@
 
 
 ## About This Project
-This project is just for my portfolio. See live demo:   
+This project is just for my portfolio. See live demo: https://lime-blog.vercel.app  
 The design is inspired by this [Figma](https://www.figma.com/community/file/1114626668498118174).  
 Uses Firebase and Vercel as backend.
 
