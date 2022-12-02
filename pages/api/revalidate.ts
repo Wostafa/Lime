@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import VerifyUser from '../../lib/verify-user';
+import '../../lib/firebase-admin';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const path = req.query.path;

@@ -1,7 +1,7 @@
 
 <div align='center'>
-<h1 align='center'>Lime - NextJS Blog</h1>
-<h4 align='center'>Firebase + Vercel</h4>
+<h1 align='center'>Lime - Next.js Blog</h1>
+<h2 align='center'>Firebase + Vercel</h2>
 <a href='#'>Live Demo</a>
 |
 <a href='https://github.com/Wostafa/Lime#features'>Features</a>
@@ -11,24 +11,27 @@
 </div>
 <br>
 
-<!-- [![Product Name Screen Shot][product-screenshot]]() -->
+[![Product Name Screen Shot][product-screenshot]]()
 
 
 ## About This Project
-This project is just for my portfolio. See live demo: 
-The design is inspired by this [Figma](https://www.figma.com/community/file/1114626668498118174).   
+This project is just for my portfolio. See live demo:   
+The design is inspired by this [Figma](https://www.figma.com/community/file/1114626668498118174).  
+Uses Firebase and Vercel as backend.
 
 ## Features
 * Responsive
 * Authentication with google account
+* Users can write comments for posts
 * Users can publish new posts and remove them
+* New posts can be drafted and have a preview before publishing
 
 ## Technologies
-* Cypress
-* Tailwind
-* Firebase
-* EditorJS
 * Vercel
+* Cypress
+* Firebase
+* Tailwind
+* Editor.js
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [product-screenshot]: mockup.png
