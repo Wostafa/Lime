@@ -24,7 +24,7 @@ export default function Comments({ id }: { id: string }) {
   const handlerTextarea: ChangeEventHandler<HTMLTextAreaElement> = e => {
     setTextareaValue(e.target.value);
   };
-  const handlerSend: ChangeEventHandler<HTMLButtonElement> = async e => {
+  const handlerSend: ChangeEventHandler<HTMLButtonElement> = async () => {
     if (!textareaValue) {
       notify.error('Comment is empty!');
       return;

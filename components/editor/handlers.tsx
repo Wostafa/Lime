@@ -1,5 +1,5 @@
 import { NextRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { TOKEN_KEY, PostPublish } from '../../constants';
 import { notify } from '../elements';
 

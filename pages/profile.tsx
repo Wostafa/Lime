@@ -1,4 +1,4 @@
-import { Main, Loading, Wrapper } from '../components/elements';
+import { Loading, Wrapper } from '../components/elements';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useContext } from 'react';

@@ -11,7 +11,7 @@ import Parser from '../../lib/editorjs-parser';
 
 const db = getFirestore();
 
-export default function Post({ data, title, user, id }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Post({ data, title, id }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter();
   let Content = <></>;
   if (!router.isFallback) {
